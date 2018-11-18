@@ -21,4 +21,4 @@ include_directories(${gtest_SOURCE_DIR}/include ${COMMON_INCLUDES})
 
 add_executable(${PROJECT_NAME} main.cpp)
 
-target_link_libraries(${PROJECT_NAME} gtest  gtest_main)
+target_link_libraries(${PROJECT_NAME} simpleNN gtest gtest_main)

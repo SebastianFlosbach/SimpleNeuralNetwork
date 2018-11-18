@@ -1,5 +1,6 @@
 #pragma once
-#include "definitions.h"
+
+typedef unsigned int Uint32;
 
 namespace network {
 
