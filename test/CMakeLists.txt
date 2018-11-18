@@ -2,23 +2,9 @@ CMAKE_MINIMUM_REQUIRED(VERSION 3.8)
 
 project(srcTest)
 
-# force static runtime libraries for msvc builds
-if(MSVC)
-  set(variables 
-    CMAKE_CXX_FLAGS_DEBUG
-    CMAKE_CXX_FLAGS_RELEASE
-	CMAKE_CXX_FLAGS_RELWITHDEBINFO
-	CMAKE_CXX_FLAGS_MINSIZEREL
-  )
-  foreach(variable ${variables})
-	if(${variable} MATCHES "/MD")
-	  string(REGEX REPLACE "/MD" "/MT" ${variable} "${${variable}}")
-	endif()
-  endforeach()
-endif()
-
 include_directories(${gtest_SOURCE_DIR}/include ${COMMON_INCLUDES})
+include_directories(${simpleNN_INCLUDE_DIR})
 
 add_executable(${PROJECT_NAME} main.cpp)
 
-target_link_libraries(${PROJECT_NAME} simpleNN gtest gtest_main)
+target_link_libraries(${PROJECT_NAME} PRIVATE simpleNN gtest gtest_main)

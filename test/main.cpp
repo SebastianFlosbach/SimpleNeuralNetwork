@@ -1,8 +1,12 @@
 #include "gtest/gtest.h"
 
+#include "Neuron.h"
+
 TEST( myTestCase, myTest ) {
-	int arg = 0;
-	ASSERT_EQ( arg, 0 );
+	network::Neuron neuron0 = network::Neuron();
+	ASSERT_EQ( neuron0.Id(), 0 );
+	network::Neuron neuron1 = network::Neuron();
+	ASSERT_EQ( neuron1.Id(), 1 );
 }
 
 
