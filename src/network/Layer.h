@@ -5,15 +5,24 @@
 
 namespace network {
 
-	class Layer {
+	class Layer;
 
+	typedef std::unique_ptr<Layer> LayerPtr;
+
+	class Layer {
+		Uint32 id_;
 		std::vector<NeuronPtr> neurons_;
 
 	public:
-		Layer();
+		Layer( Uint32 id ) : id_( id ) {
 
-		bool addNeuron( NeuronPtr& neuron );
-		bool removeNeuron( Uint32 id );
+		}
+
+		const Uint32 Id() const { return id_; }
+		const bool addNeuron( NeuronPtr& neuron );
+		const bool removeNeuron( Uint32 id );
+		const Uint32 size() const { return neurons_.size(); }
+
 	};
 
 }

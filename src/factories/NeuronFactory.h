@@ -11,8 +11,8 @@ namespace factory {
 			idCounter = 0;
 		}
 
-		network::Neuron* createNeuron() {
-			return new network::Neuron( idCounter++ );
+		network::NeuronPtr createNeuron() {
+			return std::make_unique<network::Neuron>( idCounter++ );
 		}
 	};
 }
