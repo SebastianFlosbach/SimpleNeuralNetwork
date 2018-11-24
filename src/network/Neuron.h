@@ -1,8 +1,13 @@
 #pragma once
+#include <memory>
 
 typedef unsigned int Uint32;
 
 namespace network {
+
+	class Neuron;
+
+	typedef std::unique_ptr<Neuron> NeuronPtr;
 
 	class Neuron {
 
@@ -10,7 +15,9 @@ namespace network {
 		float bias_;
 
 	public:
-		Neuron();
+		Neuron( Uint32 id ) : id_( id ) {
+
+		}
 
 		const Uint32 Id() const { return id_; }
 		const float getOutput( float input ) const;

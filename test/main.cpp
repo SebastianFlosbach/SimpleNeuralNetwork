@@ -1,12 +1,24 @@
 #include "gtest/gtest.h"
 
 #include "Neuron.h"
+#include "NeuronFactory.h"
 
-TEST( myTestCase, myTest ) {
-	network::Neuron neuron0 = network::Neuron();
-	ASSERT_EQ( neuron0.Id(), 0 );
-	network::Neuron neuron1 = network::Neuron();
-	ASSERT_EQ( neuron1.Id(), 1 );
+TEST( network_test, creatingNeuron ) {
+	network::Neuron n1 = network::Neuron( 0 );
+	ASSERT_EQ( n1.Id(), 0 );
+	network::Neuron n2 = network::Neuron( 0xff );
+	ASSERT_EQ( n2.Id(), 0xff );
+}
+
+TEST( factory_test, creatingNeuron ) {
+	factory::NeuronFactory nf = factory::NeuronFactory();
+	network::Neuron* n1 = nf.createNeuron();
+	ASSERT_EQ( n1->Id(), 0 );
+	network::Neuron* n2 = nf.createNeuron();
+	ASSERT_EQ( n2->Id(), 1 );
+
+	delete n1;
+	delete n2;
 }
 
 

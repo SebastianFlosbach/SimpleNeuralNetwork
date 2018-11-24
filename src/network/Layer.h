@@ -7,12 +7,12 @@ namespace network {
 
 	class Layer {
 
-		std::vector<Neuron> neurons_;
+		std::vector<NeuronPtr> neurons_;
 
 	public:
 		Layer();
 
-		bool addNeuron( Neuron&& neuron );
+		bool addNeuron( NeuronPtr& neuron );
 		bool removeNeuron( Uint32 id );
 	};
 
