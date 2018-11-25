@@ -21,6 +21,7 @@ namespace network {
 		const Uint32 Id() const { return id_; }
 		const bool addNeuron( NeuronPtr& neuron );
 		const bool removeNeuron( Uint32 id );
+		void setInput( Uint32 id, float value );
 		const Uint32 size() const { return neurons_.size(); }
 
 	};

@@ -26,4 +26,8 @@ namespace network {
 		neurons_.erase( it );
 		return true;
 	}
+
+	void Layer::setInput( Uint32 id, float value ) {
+
+	}
 }

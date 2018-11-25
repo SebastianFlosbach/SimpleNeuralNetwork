@@ -1,5 +1,6 @@
 #include "Neuron.h"
 
+#include <algorithm>
 #include <math.h>
 
 float sigmoid( float arg ) {
@@ -8,8 +9,8 @@ float sigmoid( float arg ) {
 
 namespace network {
 
-	const float Neuron::getOutput( float input ) const {
-		return sigmoid( input + this->bias_ );
+	const float Neuron::getOutput() const {
+		return sigmoid( currentInput_ + this->bias_ );
 	}
 
 	void Neuron::addConnection( float bias, NeuronPtr& target ) {
@@ -18,7 +19,14 @@ namespace network {
 	}
 
 	bool Neuron::removeConnection( Uint32 id ) {
-		return false;
+		auto it = std::find_if( connections_.begin(), connections_.end(), [id]( Connection& current ) { return current.getTarget()->Id() == id; } );
+
+		if ( it == connections_.end() ) {
+			return false;
+		}
+
+		connections_.erase( it );
+		return true;
 	}
 
 	void Neuron::resetInput() {

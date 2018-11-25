@@ -8,7 +8,10 @@ namespace network {
 
 	public:
 		const Uint32 inputSize() const;
+		const Uint32 outputSize() const;
 		bool addLayer( LayerPtr& layer );
+		void setInput( Uint32 id );
+		void connectAllLayers();
 
 	};
 }

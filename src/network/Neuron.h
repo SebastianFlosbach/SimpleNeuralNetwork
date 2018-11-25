@@ -25,7 +25,7 @@ namespace network {
 		}
 
 		const Uint32 Id() const { return id_; }
-		const float getOutput( float input ) const;
+		const float getOutput() const;
 		const float getBias() const { return bias_; }
 		void setBias( float bias ) { bias_ = bias; }
 		void addConnection( float bias, NeuronPtr& target );
