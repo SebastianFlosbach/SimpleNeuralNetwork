@@ -14,7 +14,7 @@ TEST( network_test, creatingNeuron ) {
 }
 
 TEST( network_test, layer ) {
-	auto n1 = std::make_unique<network::Neuron>( 1 );
+	auto n1 = std::make_shared<network::Neuron>( 1 );
 	auto l1 = network::Layer( 0 );
 	ASSERT_EQ( l1.size(), 0 );
 

@@ -7,7 +7,7 @@ namespace network {
 
 	class Neuron;
 
-	typedef std::unique_ptr<Neuron> NeuronPtr;
+	typedef std::shared_ptr<Neuron> NeuronPtr;
 
 	class Neuron {
 
