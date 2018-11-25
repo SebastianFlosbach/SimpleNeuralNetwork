@@ -1,5 +1,7 @@
 #include "Network.h"
 
+#include <algorithm>
+
 namespace network {
 	
 	const Uint32 Network::inputSize() const {

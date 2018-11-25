@@ -10,7 +10,7 @@ namespace network {
 		target_ = neuron;
 	}
 
-	const Neuron* getTarget() const {
+	const Neuron* Connection::getTarget() const {
 		if ( auto shared_target = target_.lock() ) {
 			return shared_target.get();
 		}

@@ -13,6 +13,15 @@ TEST( network_test, creatingNeuron ) {
 	ASSERT_EQ( n2.Id(), 0xff );
 }
 
+TEST( network_test, connectingNeurons ) {
+	auto neuronFactory = factory::NeuronFactory();
+	auto n1 = neuronFactory.createNeuron();
+	auto n2 = neuronFactory.createNeuron();
+
+	n1->addConnection( 1, n2 );
+	ASSERT_EQ( n1->getConnections()[0].getTarget()->Id(), n2->Id() );
+}
+
 TEST( network_test, layer ) {
 	auto n1 = std::make_shared<network::Neuron>( 1 );
 	auto l1 = network::Layer( 0 );

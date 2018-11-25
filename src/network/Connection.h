@@ -1,10 +1,13 @@
 #pragma once
-#include "Neuron.h"
+#include <memory>
 
 namespace network {
 
+	class Neuron;
+	typedef std::shared_ptr<Neuron> NeuronPtr;
+
 	struct Connection {
-		Connection( float bias ) : bias_( bias ) {
+		Connection( float bias = 0.f ) : bias_( bias ) {
 
 		}
 
