@@ -32,7 +32,7 @@ namespace network {
 
 	void Neuron::operateConnection() {
 		for ( auto connection : connections_ ) {
-			connection.operate();
+			connection.operate( getOutput() );
 		}
 	}
 }

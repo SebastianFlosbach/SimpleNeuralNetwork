@@ -26,9 +26,10 @@ namespace network {
 		inline const Uint32 id() const { return id_; }
 		const Uint32 size() const { return neurons_.size(); }
 
-		const void addNeuron( float bias );
+		const Uint32 addNeuron();
 		NeuronPtr getNeuron( Uint32 id );
 		void resetInput();
+		void setInput( Uint32 id, float input );
 		void operateOutput();
 
 	};

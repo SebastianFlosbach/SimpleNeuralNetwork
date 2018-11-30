@@ -3,8 +3,9 @@
 
 namespace network {
 
-	const void Layer::addNeuron( float bias ) {
-		neurons_.emplace_back( Neuron( neurons_.size(), bias ) );
+	const Uint32 Layer::addNeuron() {
+		neurons_.emplace_back( new Neuron( neurons_.size() ) );
+		return neurons_.size() - 1;
 	}
 
 	NeuronPtr Layer::getNeuron( Uint32 id ) {
@@ -25,5 +26,13 @@ namespace network {
 		for ( auto neuron : neurons_ ) {
 			neuron->operateConnection();
 		}
+	}
+
+	void Layer::setInput( Uint32 id, float input ) {
+		if ( id >= neurons_.size() ) {
+			return;
+		}
+
+		neurons_[id]->setInput( input );
 	}
 }
