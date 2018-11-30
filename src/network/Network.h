@@ -4,13 +4,13 @@
 namespace network {
 
 	class Network {
-		std::vector<LayerPtr> layers_;
+		std::vector<Layer> layers_;
 
 	public:
 		const Uint32 inputSize() const;
 		const Uint32 outputSize() const;
-		bool addLayer( LayerPtr& layer );
-		void setInput( Uint32 id );
+		void addLayer();
+		void setInput( Uint32 id, float value );
 		void connectAllLayers();
 
 	};

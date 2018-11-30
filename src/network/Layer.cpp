@@ -1,33 +1,29 @@
 #include "Layer.h"
 
-#include <algorithm>
 
 namespace network {
 
-	const bool Layer::addNeuron( NeuronPtr& neuron ) {
-		auto it = std::find_if( neurons_.begin(), neurons_.end(), [&neuron]( NeuronPtr& current ) { return current->Id() == neuron->Id(); } );
-
-		if ( it != neurons_.end() ) {
-			return false;
-		}
-
-		neurons_.push_back( std::move(neuron) );
-
-		return true;
+	const void Layer::addNeuron( float bias ) {
+		neurons_.emplace_back( neurons_.size(), bias );
 	}
 
-	const bool Layer::removeNeuron( Uint32 id ) {
-		auto it = std::find_if( neurons_.begin(), neurons_.end(), [id]( NeuronPtr& current ) { return current->Id() == id; } );
-
-		if ( it == neurons_.end() ) {
-			return false;
+	const Neuron* Layer::getNeuron( Uint32 id ) {
+		if ( id >= neurons_.size() ) {
+			return nullptr;
 		}
 
-		neurons_.erase( it );
-		return true;
+		return neurons_[id].get();
 	}
 
-	void Layer::setInput( Uint32 id, float value ) {
+	void Layer::resetInput() {
+		for ( auto neuron : neurons_ ) {
+			neuron->resetInput();
+		}
+	}
 
+	void Layer::operateOutput() {
+		for ( auto neuron : neurons_ ) {
+			neuron.operateConnection();
+		}
 	}
 }

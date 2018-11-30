@@ -20,19 +20,17 @@ namespace network {
 		float currentInput_;
 
 	public:
-		Neuron( Uint32 id ) : id_( id ) {
-
+		Neuron( Uint32 id, float bias ) : id_( id ), bias_( bias ) {
 		}
 
-		const Uint32 Id() const { return id_; }
+		inline const Uint32 Id() const { return id_; }
+		inline const float getBias() const { return bias_; }
 		const float getOutput() const;
-		const float getBias() const { return bias_; }
-		void setBias( float bias ) { bias_ = bias; }
 		void addConnection( float bias, NeuronPtr& target );
-		const std::vector<Connection>& getConnections() const { return connections_; }
-		bool removeConnection( Uint32 id );
+		void operateConnection();
 		void resetInput();
 		void addToInput( float input );
+		void setInput( float input );
 
 	};
 

@@ -9,7 +9,7 @@ namespace network {
 			return 0;
 		}
 
-		return layers_[0]->size();
+		return layers_[0].size();
 	}
 
 	const Uint32 Network::outputSize() const {
@@ -17,32 +17,38 @@ namespace network {
 			return 0;
 		}
 
-		return layers_[layers_.size() - 1]->size();
+		return layers_[layers_.size() - 1].size();
 	}
 
-	bool Network::addLayer( LayerPtr& layer ) {
-		auto it = std::find_if( layers_.begin(), layers_.end(), [&layer]( LayerPtr& current ) { return current->Id() == layer->Id(); } );
-
-		if ( it != layers_.end() ) {
-			return false;
-		}
-
-		layers_.push_back( std::move( layer ) );
-
-		return true;
+	void Network::addLayer() {
+		layers_.emplace_back( layers_.size() );
 	}
 
-	void Network::setInput( Uint32 id ) {
+	void Network::setInput( Uint32 id, float value ) {
 
 		if ( layers_.size() < 1 ) {
 			throw std::runtime_error( "Network has no layer" );
 		}
 
-		auto inputLayer = layers_[0].get();
-		
+		layers_[0].setInput();
 	}
 
 	void Network::connectAllLayers() {
 
+		if ( layers_.size() < 2 ) {
+			throw std::runtime_error( "Network has fewer than two layers" );
+		}
+
+		for ( int i = 0; i < layers_.size() - 1; i++ ) {
+			auto sourceLayer = layers_[i];
+			auto targetLayer = layers_[i + 1];
+
+			for ( int sourceNeuronId = 0; sourceNeuronId < sourceLayer.size(); sourceNeuronId++ ) {
+				auto sourceNeuron = sourceLayer.getNeuron( sourceNeuronId );
+				for ( int targetNeuronId = 0; targetNeuronId < targetLayer.size(); targetNeuronId++ ) {
+					sourceNeuron->addConnection( 1.0f, targetLayer[targetNeuronId] );
+				}
+			}
+		}
 	}
 }
