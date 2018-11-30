@@ -5,6 +5,10 @@
 
 namespace network {
 
+	class Layer;
+
+	typedef std::unique_ptr<Layer> LayerPtr;
+
 	class Layer {
 		// Unique identifier of this layer inside its network
 		Uint32 id_;
@@ -23,10 +27,9 @@ namespace network {
 		const Uint32 size() const { return neurons_.size(); }
 
 		const void addNeuron( float bias );
-		const Neuron* getNeuron( Uint32 id );
+		NeuronPtr getNeuron( Uint32 id );
 		void resetInput();
 		void operateOutput();
-
 
 	};
 }

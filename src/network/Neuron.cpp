@@ -15,8 +15,7 @@ namespace network {
 	}
 
 	void Neuron::addConnection( float bias, NeuronPtr& target ) {
-		connections_.emplace_back( bias );
-		connections_.back().setTarget( target );
+		connections_.emplace_back( bias, target );
 	}
 
 	void Neuron::resetInput() {

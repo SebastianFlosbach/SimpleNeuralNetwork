@@ -9,7 +9,7 @@ namespace network {
 			return 0;
 		}
 
-		return layers_[0].size();
+		return layers_[0]->size();
 	}
 
 	const Uint32 Network::outputSize() const {
@@ -17,7 +17,7 @@ namespace network {
 			return 0;
 		}
 
-		return layers_[layers_.size() - 1].size();
+		return layers_[layers_.size() - 1]->size();
 	}
 
 	void Network::addLayer() {
@@ -30,7 +30,7 @@ namespace network {
 			throw std::runtime_error( "Network has no layer" );
 		}
 
-		layers_[0].setInput();
+		layers_[0]->;
 	}
 
 	void Network::connectAllLayers() {
@@ -46,7 +46,7 @@ namespace network {
 			for ( int sourceNeuronId = 0; sourceNeuronId < sourceLayer.size(); sourceNeuronId++ ) {
 				auto sourceNeuron = sourceLayer.getNeuron( sourceNeuronId );
 				for ( int targetNeuronId = 0; targetNeuronId < targetLayer.size(); targetNeuronId++ ) {
-					sourceNeuron->addConnection( 1.0f, targetLayer[targetNeuronId] );
+					sourceNeuron->addConnection( 1.0f, targetLayer.getNeuron( targetNeuronId ) );
 				}
 			}
 		}

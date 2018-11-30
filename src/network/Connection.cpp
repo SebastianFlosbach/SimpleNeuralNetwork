@@ -2,9 +2,9 @@
 
 namespace network {
 
-	void Connection::operate() {
+	void Connection::operate( float output ) {
 		if ( auto target = target_.lock() ) {
-			target->addToInput()
+			target->addToInput( output );
 		}
 	}
 }

@@ -9,6 +9,7 @@ typedef unsigned int Uint32;
 namespace network {
 
 	class Neuron;
+	class Connection;
 
 	typedef std::shared_ptr<Neuron> NeuronPtr;
 
