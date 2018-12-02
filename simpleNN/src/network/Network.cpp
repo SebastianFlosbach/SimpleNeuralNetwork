@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include <sstream>
+#include <random>
 
 namespace network {
 
@@ -19,6 +20,41 @@ namespace network {
 		}
 
 		connectAllLayers();
+	}
+
+	NetworkPtr Network::copyAndMutate( const float chance, const float range ) const {
+		if ( chance < 0 || chance > 1 ) {
+			std::ostringstream errorMsg;
+			errorMsg << "[Network::copyAndMutate(const float, const float)]: chance has to be [0;1], is actually: " << chance;
+			throw std::invalid_argument( errorMsg.str() );
+		}
+
+		NetworkPtr mutatedNetwork = std::make_unique<Network>();
+
+		for ( size_t i = 0; i < this->size(); i++ ) {
+			auto layerId = mutatedNetwork->addLayer();
+			auto layer = mutatedNetwork->getLayer( layerId );
+
+			for ( size_t j = 0; j < layer->size(); j++ ) {
+				auto neuronId = mutatedNetwork->addNeuronToLayer( layerId );
+				auto neuron = layer->getNeuron( neuronId );
+
+				auto bias = neuron->getBias();
+
+				auto mutateChance = static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
+				auto scaling = -1 + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (1 - (-1))));
+
+				if ( mutateChance <= chance ) {
+					bias *= (scaling * range);
+				}
+
+				mutatedNetwork->setNeuronBias( layerId, neuronId, bias );
+			}
+		}
+
+		mutatedNetwork->connectAllLayers();
+
+		return mutatedNetwork;
 	}
 
 	const Layer* Network::getLayer( const Uint32 layerId ) {

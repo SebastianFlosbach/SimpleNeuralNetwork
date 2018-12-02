@@ -3,6 +3,10 @@
 
 namespace network {
 
+	class Network;
+
+	typedef std::unique_ptr<Network> NetworkPtr;
+
 	class Network {
 		std::vector<LayerPtr> layers_;
 
@@ -13,6 +17,8 @@ namespace network {
 
 		// Copy constructor
 		Network( const Network& network );
+
+		NetworkPtr copyAndMutate( const float chance, const float range ) const;
 
 		const Uint32 inputSize() const;
 		const Uint32 outputSize() const;
