@@ -1,7 +1,5 @@
 #include "gtest/gtest.h"
 
-#include "Neuron.h"
-#include "Layer.h"
 #include "Network.h"
 
 
@@ -17,7 +15,12 @@ TEST( network_test, createNetwork_1Layer ) {
 	testNetwork.connectAllLayers();
 	testNetwork.setInput( neuronId, 0 );
 
-	testNetwork.
+	testNetwork.operate();
+	auto output = testNetwork.getOutput( neuronId );
+}
+
+TEST( network_test, network_creation ) {
+	network::Network testNetwork = network::Network();
 }
 
 int main( int argc, char* argv[] ) {

@@ -35,7 +35,7 @@ namespace network {
 		layers_[0]->setInput( id, value );
 	}
 
-	const Uint32 Network::addNeuronToLayer( Uint32 layerId ) {
+	const Uint32 Network::addNeuronToLayer( const Uint32 layerId ) {
 		if ( layerId >= layers_.size() ) {
 			std::ostringstream errorMsg;
 			errorMsg << "Could not add neuron to layer " << layerId << ", because it does not exist";
@@ -47,8 +47,12 @@ namespace network {
 
 	void Network::connectAllLayers() {
 
-		if ( layers_.size() < 2 ) {
-			throw std::runtime_error( "Network has fewer than two layers" );
+		if ( layers_.size() == 0 ) {
+			throw std::runtime_error( "Network has no layers" );
+		}
+
+		if ( layers_.size() == 1 ) {
+			return;
 		}
 
 		for ( int i = 0; i < layers_.size() - 1; i++ ) {
@@ -64,7 +68,7 @@ namespace network {
 		}
 	}
 
-	void Network::setNeuronBias( Uint32 layerId, Uint32 neuronId, float bias ) {
+	void Network::setNeuronBias( const Uint32 layerId, const Uint32 neuronId, float bias ) {
 		if ( layerId >= layers_.size() ) {
 			std::ostringstream errorMsg;
 			errorMsg << "Could not set bias in layer[" << layerId << "], neuron[" << neuronId << "] because this layer does not exist";
@@ -86,6 +90,24 @@ namespace network {
 		for ( size_t i = 0; i < layers_.size(); i++ ) {
 			layers_[i]->operateOutput();
 		}
+	}
+
+	const float Network::getOutput( const Uint32 neuronId ) const {
+		if ( layers_.size() == 0 ) {
+			throw std::runtime_error( "[Network::getOutput(const Uint32)] Network has no layer" );
+		}
+
+		auto outputLayer = layers_.back().get();
+
+		if ( neuronId >= outputLayer->size() ) {
+			std::ostringstream errorMsg;
+			errorMsg << "Could not get output from layer[" << outputLayer->id() << "], neuron[" << neuronId << "] because this neuron does not exist";
+			throw std::invalid_argument( errorMsg.str() );
+		}
+
+		auto outputNeuron = outputLayer->getNeuron( neuronId );
+
+		return outputNeuron->getOutput();
 	}
 
 }
