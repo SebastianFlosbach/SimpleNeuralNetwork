@@ -8,7 +8,7 @@ namespace network {
 		return neurons_.size() - 1;
 	}
 
-	NeuronPtr Layer::getNeuron( Uint32 id ) {
+	NeuronPtr Layer::getNeuron( Uint32 id ) const {
 		if ( id >= neurons_.size() ) {
 			return nullptr;
 		}

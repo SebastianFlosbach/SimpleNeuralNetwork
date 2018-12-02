@@ -11,4 +11,4 @@ file(GLOB simpleNN_SOURCE
 
 include_directories(include)
 
-add_library(${PROJECT_NAME} SHARED ${simpleNN_SOURCE})
+add_library(${PROJECT_NAME} STATIC ${simpleNN_SOURCE})

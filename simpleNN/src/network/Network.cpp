@@ -4,7 +4,31 @@
 #include <sstream>
 
 namespace network {
-	
+
+	Network::Network( const Network& network ) {
+		for ( size_t i = 0; i < network.size(); i++ ) {
+			auto layerId = addLayer();
+			auto layer = getLayer( layerId );
+
+			for ( size_t j = 0; j < layer->size(); j++ ) {
+				auto neuronId = addNeuronToLayer( layerId );
+				auto neuron = layer->getNeuron( neuronId );
+
+				setNeuronBias( layerId, neuronId, neuron->getBias() );
+			}
+		}
+
+		connectAllLayers();
+	}
+
+	const Layer* Network::getLayer( const Uint32 layerId ) {
+		if ( layerId >= layers_.size() ) {
+			return nullptr;
+		}
+
+		return layers_[layerId].get();
+	}
+
 	const Uint32 Network::inputSize() const {
 		if ( layers_.size() < 1 ) {
 			return 0;
