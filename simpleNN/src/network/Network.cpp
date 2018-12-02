@@ -147,8 +147,15 @@ namespace network {
 	}
 
 	void Network::operate() {
+		reset();
 		for ( size_t i = 0; i < layers_.size(); i++ ) {
 			layers_[i]->operateOutput();
+		}
+	}
+
+	void Network::reset() {
+		for ( size_t i = 0; i < layers_.size(); i++ ) {
+			layers_[i]->resetInput();
 		}
 	}
 

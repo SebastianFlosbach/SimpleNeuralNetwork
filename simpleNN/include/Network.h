@@ -30,6 +30,7 @@ namespace network {
 		const float getOutput( const Uint32 neuronId ) const ;
 		void connectAllLayers();
 		void operate();
+		void reset();
 
 	};
 }
