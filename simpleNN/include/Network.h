@@ -10,7 +10,7 @@ namespace network {
 	class Network {
 		std::vector<LayerPtr> layers_;
 
-		const Layer* getLayer( const Uint32 layerId );
+		const Layer* getLayer( const Uint32 layerId ) const;
 
 	public:
 		Network() = default;

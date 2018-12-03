@@ -9,19 +9,22 @@ namespace network {
 	Network::Network( const Network& network ) {
 		for ( size_t i = 0; i < network.size(); i++ ) {
 			auto layerId = addLayer();
-			auto layer = getLayer( layerId );
+			auto oldLayer = this->getLayer( layerId );
+			auto newLayer = getLayer( layerId );
 
-			for ( size_t j = 0; j < layer->size(); j++ ) {
+			for ( size_t j = 0; j < oldLayer->size(); j++ ) {
 				auto neuronId = addNeuronToLayer( layerId );
-				auto neuron = layer->getNeuron( neuronId );
+				auto oldNeuron = oldLayer->getNeuron( neuronId );
+				auto newNeuron = newLayer->getNeuron( neuronId );
 
-				setNeuronBias( layerId, neuronId, neuron->getBias() );
+				newNeuron->setBias( oldNeuron->getBias() );
 			}
 		}
 
 		connectAllLayers();
 	}
 
+	// TODO: add connection mutation
 	NetworkPtr Network::copyAndMutate( const float chance, const float range ) const {
 		if ( chance < 0 || chance > 1 ) {
 			std::ostringstream errorMsg;
@@ -33,22 +36,24 @@ namespace network {
 
 		for ( size_t i = 0; i < this->size(); i++ ) {
 			auto layerId = mutatedNetwork->addLayer();
-			auto layer = mutatedNetwork->getLayer( layerId );
+			auto oldLayer = this->getLayer( layerId );
+			auto newLayer = mutatedNetwork->getLayer( layerId );
 
-			for ( size_t j = 0; j < layer->size(); j++ ) {
+			for ( size_t j = 0; j < oldLayer->size(); j++ ) {
 				auto neuronId = mutatedNetwork->addNeuronToLayer( layerId );
-				auto neuron = layer->getNeuron( neuronId );
+				auto oldNeuron = oldLayer->getNeuron( neuronId );
+				auto newNeuron = newLayer->getNeuron( neuronId );
 
-				auto bias = neuron->getBias();
+				auto bias = oldNeuron->getBias();
 
 				auto mutateChance = static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
 				auto scaling = -1 + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (1 - (-1))));
 
 				if ( mutateChance <= chance ) {
-					bias *= (scaling * range);
+					bias += (scaling * range);
 				}
 
-				mutatedNetwork->setNeuronBias( layerId, neuronId, bias );
+				newNeuron->setBias( bias );
 			}
 		}
 
@@ -57,7 +62,7 @@ namespace network {
 		return mutatedNetwork;
 	}
 
-	const Layer* Network::getLayer( const Uint32 layerId ) {
+	const Layer* Network::getLayer( const Uint32 layerId ) const {
 		if ( layerId >= layers_.size() ) {
 			return nullptr;
 		}
