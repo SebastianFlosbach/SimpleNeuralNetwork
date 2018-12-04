@@ -182,4 +182,18 @@ namespace network {
 		return outputNeuron->getOutput();
 	}
 
+	void Network::setConnection( const Uint32 sourceLayerId, const Uint32 sourceNeuronId, const Uint32 targetLayerId, const Uint32 targetNeuronId, const float bias ) {
+
+	}
+
+
+	const Connection* Network::getConnection( const Uint32 sourceLayerId, const Uint32 sourceNeuronId, const Uint32 targetLayerId, const Uint32 targetNeuronId ) const {
+		if ( sourceLayerId >= this->size() || targetLayerId >= this->size() ) {
+			throw std::invalid_argument( "[Network::getConnection]: Invalid layer id" );
+		}
+
+		auto sourceLayer = this->getLayer( sourceLayerId );
+		
+	}
+
 }
