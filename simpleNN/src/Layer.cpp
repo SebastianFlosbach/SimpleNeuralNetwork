@@ -1,8 +1,6 @@
 #include "Layer.h"
 
 
-namespace network {
-
 	const Uint32 Layer::addNeuron() {
 		neurons_.emplace_back( new Neuron( neurons_.size() ) );
 		return neurons_.size() - 1;
@@ -35,4 +33,3 @@ namespace network {
 
 		neurons_[id]->setInput( input );
 	}
-}

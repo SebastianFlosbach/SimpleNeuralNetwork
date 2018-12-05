@@ -4,7 +4,7 @@
 
 
 TEST( network_test, createNetwork_1Layer ) {
-	network::Network testNetwork = network::Network();
+	Network testNetwork = Network();
 
 	auto layerId = testNetwork.addLayer();
 	ASSERT_EQ( layerId, 0 );
@@ -20,7 +20,7 @@ TEST( network_test, createNetwork_1Layer ) {
 }
 
 TEST( network_test, network_creation ) {
-	network::Network testNetwork = network::Network();
+	Network testNetwork = Network();
 }
 
 int main( int argc, char* argv[] ) {

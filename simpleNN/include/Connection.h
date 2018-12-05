@@ -3,10 +3,10 @@
 
 #include <memory>
 
-namespace network {
 
 	class Neuron;
 	typedef std::shared_ptr<Neuron> NeuronPtr;
+	typedef unsigned int Uint32;
 
 	class Connection {
 		float bias_;
@@ -17,6 +17,6 @@ namespace network {
 		}
 
 		const float getBias() const { return bias_; }
+		const Uint32 getTargetId() const;
 		void operate( float output );
 	};
-}

@@ -6,7 +6,6 @@
 
 typedef unsigned int Uint32;
 
-namespace network {
 
 	class Neuron;
 	class Connection;
@@ -29,11 +28,10 @@ namespace network {
 		void setBias( float bias ) { bias_ = bias; }
 		const float getOutput() const;
 		void addConnection( float bias, NeuronPtr& target );
+		Connection* getConnection( Uint32 targetId );
 		void operateConnection();
 		void resetInput();
 		void addToInput( float input );
 		void setInput( float input );
 
 	};
-
-}

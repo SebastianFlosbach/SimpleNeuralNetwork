@@ -3,7 +3,6 @@
 
 #include <vector>
 
-namespace network {
 
 	class Layer;
 
@@ -33,4 +32,3 @@ namespace network {
 		void operateOutput();
 
 	};
-}

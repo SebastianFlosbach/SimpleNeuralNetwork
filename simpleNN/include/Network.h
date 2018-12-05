@@ -2,8 +2,6 @@
 #include "Layer.h"
 #include "Connection.h"
 
-namespace network {
-
 	class Network;
 
 	typedef std::unique_ptr<Network> NetworkPtr;
@@ -33,7 +31,6 @@ namespace network {
 		void operate();
 		void reset();
 		void setConnection( const Uint32 sourcelayerId, const Uint32 sourceNeuronId, const Uint32 targetLayerId, const Uint32 targetNeuronId, const float bias );
-		const Connection* getConnection( const Uint32 sourcelayerId, const Uint32 sourceNeuronId, const Uint32 targetLayerId, const Uint32 targetNeuronId ) const;
+		const Connection* getConnection( const Uint32 sourcelayerId, const Uint32 sourceNeuronId, const Uint32 targetNeuronId ) const;
 
 	};
-}

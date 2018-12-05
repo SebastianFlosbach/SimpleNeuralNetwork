@@ -6,9 +6,12 @@ project(simpleNN)
 
 file(GLOB simpleNN_SOURCE
 	include/*.h
-	src/network/*.h src/network/*.cpp
+	src/*.h		src/*.cpp
+	src/xml/*.h src/xml/*.cpp
 )
 
 include_directories(include)
 
 add_library(${PROJECT_NAME} STATIC ${simpleNN_SOURCE})
+
+target_link_libraries(${PROJECT_NAME} PRIVATE pugixml)
