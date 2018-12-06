@@ -2,12 +2,15 @@
 #include <pugixml.hpp>
 #include <string>
 
-class XmlIO {
-	std::string path_;
+#include "Network.h"
 
-	pugi::xml_document doc_;
+class XmlIO {
+	const char* path_;
 
 public:
-	XmlIO();
+	XmlIO( const char* path );
+	XmlIO( const std::string& path );
 
+	void saveNetwork( const Network& network ) const;
+	NetworkPtr loadNetwork() const;
 };

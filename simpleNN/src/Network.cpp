@@ -4,6 +4,8 @@
 #include <sstream>
 #include <random>
 
+#include "xml/XmlIO.h"
+
 
 Network::Network( const Network& network ) {
 	for ( size_t i = 0; i < network.size(); i++ ) {
@@ -224,4 +226,23 @@ const Connection* Network::getConnection( const Uint32 sourceLayerId, const Uint
 	auto sourceNeuron = sourceLayer->getNeuron( sourceNeuronId );
 
 	return sourceNeuron->getConnection( targetNeuronId );
+}
+
+const Neuron* Network::getNeuron( const Uint32 layerId, const Uint32 neuronId ) const {
+	if ( layerId >= this->size() ) {
+		return nullptr;
+	}
+
+	auto layer = layers_[layerId].get();
+	if ( neuronId >= layer->size() ) {
+		return nullptr;
+	}
+
+	return layer->getNeuron( neuronId ).get();
+}
+
+void Network::save( const std::string& name ) const {
+	XmlIO writer = XmlIO( name );
+
+	writer.saveNetwork( *this );
 }

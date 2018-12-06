@@ -65,7 +65,7 @@ int main( int argc, char* argv[] ) {
 
 	net->connectAllLayers();
 
-	while ( true ) {
+	while ( bestDiff.diff1 > 0.001 && bestDiff.diff2 > 0.001 ) {
 		NetworkPtr next;
 		bool tmp = false;
 
@@ -84,6 +84,8 @@ int main( int argc, char* argv[] ) {
 			net = std::move( next );
 		}
 	}
+
+	net->save( "and.xml" );
 	
 	return 0;
 }
