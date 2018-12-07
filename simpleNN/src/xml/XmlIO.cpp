@@ -12,10 +12,33 @@ void XmlIO::saveNetwork( const Network& network ) const {
 	auto networkNode = doc.append_child( "network" );
 
 	for ( size_t l = 0; l < network.size(); l++ ) {
+		auto layer = network.getLayer( l );
 		auto xmlLayer = networkNode.append_child( "layer" );
 
 		auto layerId = xmlLayer.append_attribute( "id" );
-		layerId.set_value( l );
+		layerId.set_value( layer->id() );
+
+		for ( size_t n = 0; n < layer->size(); n++ ) {
+			auto neuron = layer->getNeuron( n );
+			auto xmlNeuron = xmlLayer.append_child( "neuron" );
+
+			auto neuronId = xmlNeuron.append_attribute( "id" );
+			neuronId.set_value( neuron->id() );
+
+			auto neuronBias = xmlNeuron.append_attribute( "bias" );
+			neuronBias.set_value( neuron->getBias() );
+
+			for ( size_t c = 0; c < neuron->size(); c++ ) {
+				auto connection = neuron->getConnection( c );
+				auto xmlConnection = xmlNeuron.append_child( "connection" );
+
+				auto connectionId = xmlConnection.append_attribute( "targetId" );
+				connectionId.set_value( connection->getTargetId() );
+
+				auto connectionWeight = xmlConnection.append_attribute( "weight" );
+				connectionWeight.set_value( connection->getWeight() );
+			}
+		}
 	}
 
 	doc.save_file( path_ );

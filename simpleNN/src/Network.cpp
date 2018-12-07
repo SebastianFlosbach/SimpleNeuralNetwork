@@ -66,17 +66,17 @@ NetworkPtr Network::copyAndMutate( const float chance, const float range ) const
 				for ( size_t c = 0; c < newLayer->size(); c++ ) {
 					auto oldConnection = oldNeuron->getConnection( c );
 
-					auto bias = oldConnection->getBias();
+					auto weight = oldConnection->getWeight();
 
 					auto mutateChance = static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
 					auto scaling = -1 + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (1 - (-1))));
 
 					if ( mutateChance <= chance ) {
-						bias += (scaling * range);
+						weight += (scaling * range);
 					}
 
 					auto targetNeuron = newLayer->getNeuron( c );
-					newNeuron->addConnection( bias, targetNeuron );
+					newNeuron->addConnection( weight, targetNeuron );
 				}
 			}
 		}
@@ -86,14 +86,6 @@ NetworkPtr Network::copyAndMutate( const float chance, const float range ) const
 	}
 
 	return mutatedNetwork;
-}
-
-const Layer* Network::getLayer( const Uint32 layerId ) const {
-	if ( layerId >= layers_.size() ) {
-		return nullptr;
-	}
-
-	return layers_[layerId].get();
 }
 
 const Uint32 Network::inputSize() const {
@@ -211,7 +203,6 @@ void Network::setConnection( const Uint32 sourceLayerId, const Uint32 sourceNeur
 
 }
 
-
 const Connection* Network::getConnection( const Uint32 sourceLayerId, const Uint32 sourceNeuronId, const Uint32 targetNeuronId ) const {
 	if ( sourceLayerId >= this->size() ) {
 		throw std::invalid_argument( "[Network::getConnection]: Invalid layer id" );
@@ -228,17 +219,12 @@ const Connection* Network::getConnection( const Uint32 sourceLayerId, const Uint
 	return sourceNeuron->getConnection( targetNeuronId );
 }
 
-const Neuron* Network::getNeuron( const Uint32 layerId, const Uint32 neuronId ) const {
+const Layer* Network::getLayer( const Uint32 layerId ) const {
 	if ( layerId >= this->size() ) {
 		return nullptr;
 	}
 
-	auto layer = layers_[layerId].get();
-	if ( neuronId >= layer->size() ) {
-		return nullptr;
-	}
-
-	return layer->getNeuron( neuronId ).get();
+	return layers_[layerId].get();
 }
 
 void Network::save( const std::string& name ) const {

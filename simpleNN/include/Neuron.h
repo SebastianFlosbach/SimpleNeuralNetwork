@@ -23,7 +23,8 @@ typedef unsigned int Uint32;
 		Neuron( Uint32 id ) : id_( id ), bias_( 0 ) {
 		}
 
-		inline const Uint32 Id() const { return id_; }
+		inline const Uint32 id() const { return id_; }
+		inline const Uint32 size() const { return connections_.size(); }
 		inline const float getBias() const { return bias_; }
 		void setBias( float bias ) { bias_ = bias; }
 		const float getOutput() const;

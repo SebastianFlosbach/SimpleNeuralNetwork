@@ -9,8 +9,6 @@
 	class Network {
 		std::vector<LayerPtr> layers_;
 
-		const Layer* getLayer( const Uint32 layerId ) const;
-
 	public:
 		Network() = default;
 
@@ -32,8 +30,7 @@
 		void reset();
 		void setConnection( const Uint32 sourcelayerId, const Uint32 sourceNeuronId, const Uint32 targetLayerId, const Uint32 targetNeuronId, const float bias );
 		const Connection* getConnection( const Uint32 sourcelayerId, const Uint32 sourceNeuronId, const Uint32 targetNeuronId ) const;
-
-		const Neuron* getNeuron( const Uint32 layerId, const Uint32 neuronId ) const;
+		const Layer* getLayer( const Uint32 layerId ) const;
 
 		void save( const std::string& name ) const;
 

@@ -17,28 +17,24 @@ diff testNetwork( Network* network ) {
 	network->setInput( 1, 0 );
 	network->operate();
 	diff1 += abs( 1 - network->getOutput( 0 ) );
-	diff1 += abs( 0 - network->getOutput( 1 ) );
 
 	network->reset();
 	network->setInput( 0, 1 );
 	network->setInput( 1, 0 );
 	network->operate();
 	diff1 += abs( 1 - network->getOutput( 0 ) );
-	diff1 += abs( 0 - network->getOutput( 1 ) );
 
 	network->reset();
 	network->setInput( 0, 0 );
 	network->setInput( 1, 1 );
 	network->operate();
 	diff1 += abs( 1 - network->getOutput( 0 ) );
-	diff1 += abs( 0 - network->getOutput( 1 ) );
 
 	network->reset();
 	network->setInput( 0, 1 );
 	network->setInput( 1, 1 );
 	network->operate();
 	diff2 += abs( 0 - network->getOutput( 0 ) );
-	diff2 += abs( 1 - network->getOutput( 1 ) );
 
 	return { diff1, diff2 };
 }
@@ -60,7 +56,6 @@ int main( int argc, char* argv[] ) {
 	net->addNeuronToLayer( 1 );
 	net->addNeuronToLayer( 1 );
 
-	net->addNeuronToLayer( 2 );
 	net->addNeuronToLayer( 2 );
 
 	net->connectAllLayers();

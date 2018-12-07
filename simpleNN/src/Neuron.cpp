@@ -18,9 +18,9 @@ void Neuron::addConnection( float bias, NeuronPtr& target ) {
 }
 
 Connection* Neuron::getConnection( Uint32 targetId ) {
-	for ( auto connection : connections_ ) {
-		if ( targetId == connection.getTargetId() ) {
-			return &connection;
+	for ( size_t i = 0; i < size(); i++ ) {
+		if ( targetId == connections_[i].getTargetId() ) {
+			return &connections_[i];
 		}
 	}
 	return nullptr;
