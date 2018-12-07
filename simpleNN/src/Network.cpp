@@ -104,9 +104,14 @@ const Uint32 Network::outputSize() const {
 	return layers_[layers_.size() - 1]->size();
 }
 
-const Uint32 Network::addLayer() {
-	layers_.emplace_back( new Layer( layers_.size() ) );
-	return layers_.size() - 1;
+const Uint32 Network::addLayer( const Uint32 count ) {
+	const auto returnValue = layers_.size();
+	
+	for ( size_t i = 0; i < count; i++ ) {
+		layers_.emplace_back( new Layer( layers_.size() ) );
+	}
+
+	return returnValue;
 }
 
 void Network::setInput( Uint32 id, float value ) {
@@ -118,14 +123,14 @@ void Network::setInput( Uint32 id, float value ) {
 	layers_[0]->setInput( id, value );
 }
 
-const Uint32 Network::addNeuronToLayer( const Uint32 layerId ) {
+const Uint32 Network::addNeuronToLayer( const Uint32 layerId, const Uint32 count ) {
 	if ( layerId >= layers_.size() ) {
 		std::ostringstream errorMsg;
 		errorMsg << "Could not add neuron to layer " << layerId << ", because it does not exist";
 		throw std::invalid_argument( errorMsg.str() );
 	}
 
-	return layers_[layerId]->addNeuron();
+	return layers_[layerId]->addNeuron( count );
 }
 
 void Network::connectAllLayers() {

@@ -25,7 +25,7 @@
 		inline const Uint32 id() const { return id_; }
 		const Uint32 size() const { return neurons_.size(); }
 
-		const Uint32 addNeuron();
+		const Uint32 addNeuron( const Uint32 count = 0 );
 		NeuronPtr getNeuron( Uint32 id ) const;
 		void resetInput();
 		void setInput( Uint32 id, float input );
