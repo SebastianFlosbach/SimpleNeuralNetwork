@@ -1,9 +1,12 @@
 #pragma once
 #include <string>
+#include <vector>
 
 #include "IdxObject.h"
 
-enum class idxType {
+typedef unsigned char Uint8;
+
+enum class IdxType {
 	UBYTE,
 	SBYTE,
 	SHORT,
@@ -12,20 +15,19 @@ enum class idxType {
 	DOUBLE
 };
 
-template <class T>
 class IdxReader {
 	std::string path_;
-	Uint32 objectCount_;
+	std::vector<int> dimensionSize_;
 
 	void* buffer_;
+
+	void loadData();
 
 public:
 	IdxReader( const std::string& path ) : path_( path ), buffer_( nullptr ){
 	}
 
-	inline const Uint32 objectCount() const { return objectCount_; }
-
-	void loadData();
-	const IdxObject<T> getIdxObject( const Uint32 index ) const;
+	template <typename T>
+	const IdxObject<T> getIdxObject( const Uint32 index );
 
 };

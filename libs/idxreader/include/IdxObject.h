@@ -1,15 +1,15 @@
 #pragma once
+#include <vector>
 
 typedef unsigned int Uint32;
 
 template <typename T>
 struct IdxObject {
-	IdxObject( const Uint32 width, const Uint32 height, T&& data_ ) : width_( width ), height_( height ), data_( data ) {
+	IdxObject( std::vector<int> size, T* data ) : size_( size ), data_( data ) {
 	}
 
 private:
-	Uint32 width_;
-	Uint32 height_;
+	std::vector<int> size_;
 
 	T* data_;
 };
