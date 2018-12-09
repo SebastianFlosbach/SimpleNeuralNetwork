@@ -27,7 +27,7 @@ int main( int argc, char* argv[] ) {
 	}
 	net->operate();
 
-	std::cout << "Input: " << idxLabel.getData( 0 ) << std::endl << std::endl;
+	std::cout << "Input: " << std::to_string( idxLabel.getData( 0 ) ) << std::endl << std::endl;
 
 	std::cout << "Output 0: " << net->getOutput( 0 ) << std::endl;
 	std::cout << "Output 1: " << net->getOutput( 1 ) << std::endl;
