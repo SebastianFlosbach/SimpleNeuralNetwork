@@ -4,7 +4,7 @@
 #include <fstream>
 #include <vector>
 
-int byteToInt( char a, char b, char c, char d ) {
+int byteToInt( Uint8 a, Uint8 b, Uint8 c, Uint8 d ) {
 	int res = 0;
 	res |= a;
 	res = res << 8;
