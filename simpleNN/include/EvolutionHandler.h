@@ -1,12 +1,13 @@
 #pragma once
 #include "Network.h"
 #include "TestData.h"
-
+#include "Fitness.h"
 
 typedef unsigned int Uint32;
 
 class EvolutionHandler {
 	NetworkPtr bestNetwork_;
+	Fitness bestFitness_;
 	TestData testData_;
 
 public:
@@ -18,5 +19,5 @@ public:
 	}
 
 	void evolveNextGeneration( Uint32 generationSize, float chance, float range );
-	float calculateFitness( std::vector<float> input, std::vector<float> output ) const;
+	Fitness calculateFitness( std::vector<float> input, std::vector<float> output ) const;
 };

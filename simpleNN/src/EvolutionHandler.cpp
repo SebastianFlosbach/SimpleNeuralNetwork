@@ -11,11 +11,28 @@ void EvolutionHandler::evolveNextGeneration( Uint32 generationSize, float chance
 			currentNetwork->reset();
 			currentNetwork->setInput( inputData );
 			currentNetwork->operate();
+			auto actualOutput = currentNetwork->getOutput();
 			
+			auto currentFitness = calculateFitness( actualOutput, outputData );
+
+			if ( currentFitness < bestFitness_ ) {
+				bestNetwork_ = std::move( currentNetwork );
+				bestFitness_ = std::move( currentFitness );
+			}
 		}
 	}
 }
 
-float EvolutionHandler::calculateFitness( std::vector<float> output, std::vector<float> desiredOutput ) const {
+Fitness EvolutionHandler::calculateFitness( std::vector<float> actualOutput, std::vector<float> desiredOutput ) const {
+	if ( actualOutput.size() != desiredOutput.size() ) {
+		throw std::invalid_argument( std::string( __FUNCTION__ ) + std::string( ": actualOutput and desiredOutput hava a different size" ) );
+	}
 
+	std::vector<float> diff( actualOutput.size() );
+
+	for ( size_t i = 0; i < actualOutput.size(); i++ ) {
+		diff[i] = abs( desiredOutput[i] - actualOutput[i] );
+	}
+
+	return Fitness( std::move( diff ) );
 }

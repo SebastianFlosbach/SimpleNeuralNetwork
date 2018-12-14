@@ -9,7 +9,7 @@ inline bool operator <( const Fitness& lhs, const Fitness& rhs ) {
 	}
 
 	for ( size_t i = 0; i < lhs.size(); i++ ) {
-		if ( lhs.fitness_[i] >= rhs.fitness[i] ) {
+		if ( lhs.fitness()[i] >= rhs.fitness()[i] ) {
 			return false;
 		}
 	}
@@ -23,7 +23,11 @@ inline bool operator >=( const Fitness& lhs, const Fitness& rhs ) { return !oper
 
 struct Fitness {
 
+	Fitness( std::vector<float>&& diff ) : fitness_( std::move( diff ) ){
+	}
+
 	Uint32 size() const { return fitness_.size(); }
+	const std::vector<float>& fitness() const { return fitness_; }
 
 private:
 	std::vector<float> fitness_;
