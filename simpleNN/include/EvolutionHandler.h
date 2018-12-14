@@ -16,5 +16,7 @@ public:
 	void addTestData( TestData&& testData ) {
 		testData_ = std::move( testData );
 	}
+
 	void evolveNextGeneration( Uint32 generationSize, float chance, float range );
+	float calculateFitness( std::vector<float> input, std::vector<float> output ) const;
 };

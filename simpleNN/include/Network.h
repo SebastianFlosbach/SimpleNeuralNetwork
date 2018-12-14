@@ -24,7 +24,9 @@ public:
 	const Uint32 addNeuronToLayer( const Uint32 layerId, const Uint32 count = 1 );
 	void setNeuronBias( const Uint32 layerId, const Uint32 neuronId, float bias );
 	void setInput( const Uint32 neuronId, float value );
-	const float getOutput( const Uint32 neuronId ) const;
+	void setInput( const std::vector<float>& data );
+	float getOutput( const Uint32 neuronId ) const;
+	const std::vector<float> getOutput() const;
 	void connectAllLayers();
 	void operate();
 	void reset();

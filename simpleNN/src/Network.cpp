@@ -123,6 +123,20 @@ void Network::setInput( Uint32 id, float value ) {
 	layers_[0]->setInput( id, value );
 }
 
+void Network::setInput( const std::vector<float>& data ) {
+	if ( data.size() != inputSize() ) {
+		throw std::invalid_argument( std::string( __FUNCTION__ ) + std::string( ": input data has a different size" ) );
+	}
+
+	if ( layers_.size() < 1 ) {
+		return;
+	}
+
+	for ( size_t i = 0; i < inputSize(); i++ ) {
+		layers_[0]->setInput( i, data[i] );
+	}
+}
+
 const Uint32 Network::addNeuronToLayer( const Uint32 layerId, const Uint32 count ) {
 	if ( layerId >= layers_.size() ) {
 		std::ostringstream errorMsg;
@@ -186,7 +200,7 @@ void Network::reset() {
 	}
 }
 
-const float Network::getOutput( const Uint32 neuronId ) const {
+float Network::getOutput( const Uint32 neuronId ) const {
 	if ( layers_.size() == 0 ) {
 		throw std::runtime_error( "[Network::getOutput(const Uint32)] Network has no layer" );
 	}
@@ -202,6 +216,16 @@ const float Network::getOutput( const Uint32 neuronId ) const {
 	auto outputNeuron = outputLayer->getNeuron( neuronId );
 
 	return outputNeuron->getOutput();
+}
+
+const std::vector<float> Network::getOutput() const {
+	std::vector<float> output( outputSize() );
+
+	for ( size_t i = 0; i < outputSize(); i++ ) {
+		output[i] = getOutput( i );
+	}
+
+	return output;
 }
 
 void Network::setConnection( const Uint32 sourceLayerId, const Uint32 sourceNeuronId, const Uint32 targetLayerId, const Uint32 targetNeuronId, const float bias ) {
