@@ -50,11 +50,7 @@ struct IdxHeader {
 };
 
 template <>
-const IdxObject<Uint8> IdxReader::getIdxObject( const Uint32 index ) {
-	if ( !buffer_ ) {
-		loadData();
-	}
-
+const IdxObject<Uint8> IdxReader::getIdxObject( const Uint32 index ) const {
 	if ( index >= dimensionSize_[0] ) {
 		throw std::invalid_argument( "[IdxReader::loadBWImage] index out of bounds" );
 	}
@@ -95,10 +91,10 @@ const IdxHeader readHeader( std::ifstream& inputStream ) {
 		dimensionSize[i] = byteToInt( a, b, c, d );
 	}
 
-	auto sizeInBytes = 0;
+	auto sizeInBytes = 1;
 
 	for ( auto dimSize : dimensionSize ) {
-		sizeInBytes += dimSize;
+		sizeInBytes *= dimSize;
 	}
 
 	return { type, dimensions, dimensionSize, sizeInBytes };
@@ -106,17 +102,24 @@ const IdxHeader readHeader( std::ifstream& inputStream ) {
 
 void IdxReader::loadData() {
 	std::ifstream inputStream;
-	inputStream.open( path_, std::ios::in );
+	inputStream.open( path_, std::ios::binary );
 
 	IdxHeader header = readHeader( inputStream );
 	dimensionSize_ = header.size_;
 
 	switch ( header.type_ ) {
 		case IdxType::UBYTE:
+		{
 			buffer_ = new Uint8[header.sizeInBytes_];
-			for ( size_t i = 0; i < header.sizeInBytes_; i++ ) {
-				*( (Uint8*)buffer_ + i ) = inputStream.get();
+			//for ( size_t i = 0; i < header.sizeInBytes_; i++ ) {
+			//	*( (Uint8*)buffer_ + i ) = static_cast<Uint8>( inputStream.get() );
+			//}
+			char c;
+			size_t counter = 0;
+			while ( inputStream.get( c ) ) {
+				*((Uint8*)buffer_ + counter++) = c;
 			}
+		}
 			break;
 		case IdxType::SBYTE:
 			break;
@@ -131,4 +134,8 @@ void IdxReader::loadData() {
 		default:
 			break;
 	}
+}
+
+Uint32 IdxReader::size() const {
+	return dimensionSize_[0];
 }

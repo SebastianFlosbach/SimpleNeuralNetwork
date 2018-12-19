@@ -25,9 +25,16 @@ class IdxReader {
 
 public:
 	IdxReader( const std::string& path ) : path_( path ), buffer_( nullptr ){
+		try {
+			loadData();
+		} catch ( ... ) {
+			
+		}
 	}
 
+	Uint32 size() const;
+
 	template <typename T>
-	const IdxObject<T> getIdxObject( const Uint32 index );
+	const IdxObject<T> getIdxObject( const Uint32 index ) const;
 
 };

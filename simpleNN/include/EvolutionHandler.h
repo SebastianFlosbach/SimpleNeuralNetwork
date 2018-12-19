@@ -11,7 +11,7 @@ class EvolutionHandler {
 	TestData testData_;
 
 public:
-	EvolutionHandler( NetworkPtr&& network ) : bestNetwork_( std::move( network ) ), testData_( network->inputSize(), network->outputSize() ) {
+	EvolutionHandler( NetworkPtr&& network ) : bestNetwork_( std::move( network ) ), testData_( bestNetwork_->inputSize(), bestNetwork_->outputSize() ) {
 	}
 
 	void addTestData( TestData&& testData ) {
