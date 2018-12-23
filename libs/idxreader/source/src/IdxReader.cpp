@@ -74,10 +74,14 @@ const IdxObject<Uint8> IdxReader::getIdxObject( const Uint32 index ) const {
 
 const IdxHeader readHeader( std::ifstream& inputStream ) {
 	// Read type and dimensions from magic number
-	for ( size_t i = 0; i < 2; i++ ) {
-		inputStream.get();
+	char idxTypeNum;
+	for ( size_t i = 0; i < 3; i++ ) {
+		if ( !inputStream.read( &idxTypeNum, 1 ) ) {
+			throw std::runtime_error( "Could not read file" );
+		}
 	}
-	auto type = magicNumberToIdxType( inputStream.get() );
+
+	auto type = magicNumberToIdxType( idxTypeNum );
 	auto dimensions = inputStream.get();
 
 	// Read size of each dimension
@@ -102,7 +106,11 @@ const IdxHeader readHeader( std::ifstream& inputStream ) {
 
 void IdxReader::loadData() {
 	std::ifstream inputStream;
-	inputStream.open( path_, std::ios::binary );
+	inputStream.open( path_, std::ios::in | std::ios::binary );
+	if ( !inputStream.is_open() ) {
+		throw std::runtime_error( "Could not open file" );
+	}
+
 
 	IdxHeader header = readHeader( inputStream );
 	dimensionSize_ = header.size_;
@@ -111,12 +119,9 @@ void IdxReader::loadData() {
 		case IdxType::UBYTE:
 		{
 			buffer_ = new Uint8[header.sizeInBytes_];
-			//for ( size_t i = 0; i < header.sizeInBytes_; i++ ) {
-			//	*( (Uint8*)buffer_ + i ) = static_cast<Uint8>( inputStream.get() );
-			//}
 			char c;
 			size_t counter = 0;
-			while ( inputStream.get( c ) ) {
+			while ( inputStream.read( &c, 1 ) ) {
 				*((Uint8*)buffer_ + counter++) = c;
 			}
 		}
@@ -136,6 +141,10 @@ void IdxReader::loadData() {
 	}
 }
 
-Uint32 IdxReader::size() const {
-	return dimensionSize_[0];
+Uint32 IdxReader::sizeOfDimension( Uint32 dimension ) const {
+	if ( dimension >= dimensionSize_.size() ) {
+		throw std::invalid_argument( std::string( __FUNCTION__ ) + std::string(": dimension does not exist") );
+	}
+
+	return dimensionSize_[dimension];
 }

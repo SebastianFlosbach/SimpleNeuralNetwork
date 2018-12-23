@@ -11,3 +11,5 @@ file(GLOB "IDXREADER_TEST_SOURCE"
 add_executable(${PROJECT_NAME} ${IDXREADER_TEST_SOURCE})
 
 target_link_libraries(${PROJECT_NAME} PRIVATE idxreader gtest gtest_main)
+
+configure_file( "data/idxTest.idx" "${CMAKE_CURRENT_BINARY_DIR}/data/idxTest.idx" COPYONLY )
