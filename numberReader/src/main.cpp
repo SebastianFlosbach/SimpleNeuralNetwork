@@ -24,24 +24,24 @@ int main( int argc, char* argv[] ) {
 	
 	EvolutionHandler eHandler( std::move( net ) );
 
-	for ( size_t i = 0; i < idxImages.size(); i++ ) {
-		auto idxImage = idxImages.getIdxObject<Uint8>( i );
-		auto idxLabel = idxLabels.getIdxObject<Uint8>( i );
-		
-		std::vector<float> input( idxImage.size() );
-		for ( size_t j = 0; j < idxImage.size(); j++ ) {
-			input[i] = static_cast<float>( idxImage.getData( j ) );
-		}
+	//for ( size_t i = 0; i < idxImages.size(); i++ ) {
+	//	auto idxImage = idxImages.getIdxObject<Uint8>( i );
+	//	auto idxLabel = idxLabels.getIdxObject<Uint8>( i );
+	//	
+	//	std::vector<float> input( idxImage.size() );
+	//	for ( size_t j = 0; j < idxImage.size(); j++ ) {
+	//		input[i] = static_cast<float>( idxImage.getData( j ) );
+	//	}
 
-		std::vector<float> output( 10 );
-		for ( size_t j = 0; j < 10; i++ ) {
-			output[j] = 0;
-		}
-		output[idxLabel.getData( 0 )];
+	//	std::vector<float> output( 10 );
+	//	for ( size_t j = 0; j < 10; i++ ) {
+	//		output[j] = 0;
+	//	}
+	//	output[idxLabel.getData( 0 )];
 
-		TestDataPair tPair( std::move( input ), std::move( output ) );
-		tData.addTestDataPair( std::move( tPair ) );
-	}
+	//	TestDataPair tPair( std::move( input ), std::move( output ) );
+	//	tData.addTestDataPair( std::move( tPair ) );
+	//}
 	
 	return 0;
 }

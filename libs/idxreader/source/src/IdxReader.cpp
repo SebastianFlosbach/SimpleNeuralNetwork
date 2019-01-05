@@ -42,36 +42,6 @@ IdxType magicNumberToIdxType( const char num ) {
 	}
 }
 
-struct IdxHeader {
-	IdxType type_;
-	int dimensions_;
-	std::vector<int> size_;
-	int sizeInBytes_;
-};
-
-template <>
-const IdxObject<Uint8> IdxReader::getIdxObject( const Uint32 index ) const {
-	if ( index >= dimensionSize_[0] ) {
-		throw std::invalid_argument( "[IdxReader::loadBWImage] index out of bounds" );
-	}
-
-	Uint8* data;
-	auto dataSize = 1;
-	std::vector<int> dimensions;
-
-	for ( size_t i = 1; i < dimensionSize_.size(); i++ ) {
-		dataSize *= dimensionSize_[i];
-		dimensions.push_back( dimensionSize_[i] );
-	}
-
-	data = (Uint8*)malloc( dataSize );
-
-	memcpy( data, (Uint8*)buffer_ + (index * dataSize), dataSize );
-
-	IdxObject<Uint8> idxObject( dimensions, std::move( data ) );
-	return idxObject;
-}
-
 const IdxHeader readHeader( std::ifstream& inputStream ) {
 	// Read type and dimensions from magic number
 	char idxTypeNum;
@@ -85,7 +55,7 @@ const IdxHeader readHeader( std::ifstream& inputStream ) {
 	auto dimensions = inputStream.get();
 
 	// Read size of each dimension
-	std::vector<int> dimensionSize( dimensions );
+	std::vector<Uint32> dimensionSize( dimensions );
 	for ( size_t i = 0; i < dimensions; i++ ) {
 		auto a = inputStream.get();
 		auto b = inputStream.get();
@@ -104,47 +74,27 @@ const IdxHeader readHeader( std::ifstream& inputStream ) {
 	return { type, dimensions, dimensionSize, sizeInBytes };
 }
 
-void IdxReader::loadData() {
-	std::ifstream inputStream;
-	inputStream.open( path_, std::ios::in | std::ios::binary );
-	if ( !inputStream.is_open() ) {
-		throw std::runtime_error( "Could not open file" );
-	}
-
-
-	IdxHeader header = readHeader( inputStream );
-	dimensionSize_ = header.size_;
-
-	switch ( header.type_ ) {
-		case IdxType::UBYTE:
-		{
-			buffer_ = new Uint8[header.sizeInBytes_];
-			char c;
-			size_t counter = 0;
-			while ( inputStream.read( &c, 1 ) ) {
-				*((Uint8*)buffer_ + counter++) = c;
-			}
-		}
-			break;
-		case IdxType::SBYTE:
-			break;
-		case IdxType::SHORT:
-			break;
-		case IdxType::INT:
-			break;
-		case IdxType::FLOAT:
-			break;
-		case IdxType::DOUBLE:
-			break;
-		default:
-			break;
-	}
+const IdxType IdxReader::getType() const {
+	std::ifstream inputStream( path_, std::ios::in | std::ios::binary );
+	auto header = readHeader( inputStream );
+	return header.type_;
 }
 
-Uint32 IdxReader::sizeOfDimension( Uint32 dimension ) const {
-	if ( dimension >= dimensionSize_.size() ) {
-		throw std::invalid_argument( std::string( __FUNCTION__ ) + std::string(": dimension does not exist") );
+template <>
+const IdxObject<Uint8> IdxReader::getIdxObject() const {
+	std::ifstream inputStream( path_, std::ios::in | std::ios::binary );
+	auto header = readHeader( inputStream );
+
+	Uint8* data = (Uint8*)malloc( header.sizeInBytes_ );
+
+	char c;
+	for ( size_t i = 0; i < header.sizeInBytes_; i++ ) {
+		inputStream.read( &c, 1 );
+		data[i] = c;
 	}
 
-	return dimensionSize_[dimension];
+	IdxObject<Uint8> idxObject( header, std::move( data ) );
+	return idxObject;
 }
+
+

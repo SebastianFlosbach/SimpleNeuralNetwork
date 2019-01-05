@@ -3,33 +3,64 @@
 
 typedef unsigned int Uint32;
 
+enum class IdxType {
+	UBYTE,
+	SBYTE,
+	SHORT,
+	INT,
+	FLOAT,
+	DOUBLE
+};
+
+struct IdxHeader {
+	IdxType type_;
+	int dimensions_;
+	std::vector<Uint32> sizeOfDimensions_;
+	int sizeInBytes_;
+};
+
 template <typename T>
 struct IdxObject {
-	IdxObject( std::vector<int> size, T* data ) : size_( size ), data_( data ) {
+	IdxObject( IdxHeader header, T* data ) : header_( header ), data_( data ), referenceCounter_( new Uint32( 0 ) ) {
 	}
 
-	const Uint32 size() const {
-		auto size = 1;
-		for ( size_t i = 0; i < size_.size(); i++ ) {
-			size *= size_[i];
+	~IdxObject() {
+		if ( *referenceCounter_ <= 0 ) {
+			delete[] data_;
+		} else {
+			*referenceCounter_--;
 		}
-		return size;
 	}
 
-	const Uint32 numberOfDimensions() const {
-		return size_.size();
+	Uint32 size() const {
+		return header_.sizeInBytes_;
 	}
 
-	const Uint32 sizeOfDimension( const Uint32 dimension ) const {
-		return size_[dimension];
+	Uint32 numberOfDimensions() const {
+		return header_.dimensions_;
+	}
+
+	Uint32 sizeOfDimension( const Uint32 dimension ) const {
+		return header_.sizeOfDimensions_[dimension];
 	}
 
 	const T getData( const Uint32 index ) const {
 		return data_[index];
 	}
 
-private:
-	std::vector<int> size_;
+	const IdxObject<T> getIdxObject( Uint32 index ) const;
 
+private:
+	IdxObject( IdxHeader header, T* data, Uint32* referenceCounter ) : header_( header ), data_( data ), referenceCounter_( referenceCounter ) {
+		if ( !referenceCounter ) {
+			referenceCounter_ = new Uint32( 0 );
+		} else {
+			*referenceCounter_++;
+		}
+	}
+
+	IdxHeader header_;
 	T* data_;
+
+	Uint32* referenceCounter_;
 };
