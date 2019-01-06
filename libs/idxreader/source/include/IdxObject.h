@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 
+typedef unsigned char Uint8;
 typedef unsigned int Uint32;
 
 enum class IdxType {
@@ -23,7 +24,7 @@ template <typename T>
 struct IdxObject {
 	IdxObject( IdxHeader header, T* data ) : header_( header ), data_( data ), referenceCounter_( new Uint32( 0 ) ) {
 		startIndex_ = 0;
-		endIndex_ = header.sizeInBytes_;
+		endIndex_ = header.sizeInBytes_ - 1;
 	}
 
 	~IdxObject() {
@@ -34,20 +35,16 @@ struct IdxObject {
 		}
 	}
 
-	Uint32 size() const {
-		return header_.sizeInBytes_;
-	}
-
 	Uint32 numberOfDimensions() const {
 		return header_.dimensions_;
 	}
 
-	Uint32 sizeOfDimension( const Uint32 dimension ) const {
-		return header_.sizeOfDimensions_[dimension];
+	Uint32 size() const {
+		return header_.sizeOfDimensions_[0];
 	}
 
 	const T getData( const Uint32 index ) const {
-		return data_[index];
+		return data_[startIndex_ + index];
 	}
 
 	const IdxObject<T> getIdxObject( Uint32 index ) const;

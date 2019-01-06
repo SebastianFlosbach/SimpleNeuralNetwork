@@ -22,12 +22,20 @@ TEST( idxreader_test, ReadFile_2D_2x2 ) {
 	IdxObject<Uint8> idxObject2D = reader.getIdxObject<Uint8>();
 	ASSERT_EQ( idxObject2D.numberOfDimensions(), 2 );
 
-	IdxObject<Uint8> idxObject1 = idxObject2D.
+	IdxObject<Uint8> idxObject1 = idxObject2D.getIdxObject( 0 );
+	ASSERT_EQ( idxObject1.numberOfDimensions(), 1 );
+	ASSERT_EQ( idxObject1.getData( 0 ), 0xAA );
+	ASSERT_EQ( idxObject1.getData( 1 ), 0xBB );
+
+	IdxObject<Uint8> idxObject2 = idxObject2D.getIdxObject( 1 );
+	ASSERT_EQ( idxObject2.numberOfDimensions(), 1 );
+	ASSERT_EQ( idxObject2.getData( 0 ), 0xAB );
+	ASSERT_EQ( idxObject2.getData( 1 ), 0xBA );
 }
 
 TEST( idxreader_test, ReadFile_3D_2x2x1 ) {
 	IdxReader reader( "data\\idxTest_3D.idx" );
 	ASSERT_EQ( reader.getType(), IdxType::UBYTE );
 
-	IdxObject<Uint8> idxObject = reader.getIdxObject<Uint8>();
+	IdxObject<Uint8> idxObject3D = reader.getIdxObject<Uint8>();
 }

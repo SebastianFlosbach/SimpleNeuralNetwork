@@ -85,16 +85,15 @@ const IdxObject<Uint8> IdxReader::getIdxObject() const {
 	std::ifstream inputStream( path_, std::ios::in | std::ios::binary );
 	auto header = readHeader( inputStream );
 
-	Uint8* data = (Uint8*)malloc( header.sizeInBytes_ );
+	Uint8* pData = (Uint8*)new Uint8[header.sizeInBytes_];
 
 	char c;
 	for ( size_t i = 0; i < header.sizeInBytes_; i++ ) {
 		inputStream.read( &c, 1 );
-		data[i] = c;
+		pData[i] = c;
 	}
-
-	IdxObject<Uint8> idxObject( header, std::move( data ) );
-	return idxObject;
+	
+	return { header, pData };
 }
 
 
