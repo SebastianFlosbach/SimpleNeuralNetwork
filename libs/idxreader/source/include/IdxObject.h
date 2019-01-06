@@ -22,6 +22,8 @@ struct IdxHeader {
 template <typename T>
 struct IdxObject {
 	IdxObject( IdxHeader header, T* data ) : header_( header ), data_( data ), referenceCounter_( new Uint32( 0 ) ) {
+		startIndex_ = 0;
+		endIndex_ = header.sizeInBytes_;
 	}
 
 	~IdxObject() {
@@ -51,7 +53,7 @@ struct IdxObject {
 	const IdxObject<T> getIdxObject( Uint32 index ) const;
 
 private:
-	IdxObject( IdxHeader header, T* data, Uint32* referenceCounter ) : header_( header ), data_( data ), referenceCounter_( referenceCounter ) {
+	IdxObject( IdxHeader header, T* data, Uint32* referenceCounter, Uint32 startIndex, Uint32 endIndex ) : header_( header ), data_( data ), referenceCounter_( referenceCounter ), startIndex_( startIndex ), endIndex_( endIndex ) {
 		if ( !referenceCounter ) {
 			referenceCounter_ = new Uint32( 0 );
 		} else {
@@ -61,6 +63,8 @@ private:
 
 	IdxHeader header_;
 	T* data_;
+	Uint32 startIndex_;
+	Uint32 endIndex_;
 
 	Uint32* referenceCounter_;
 };
