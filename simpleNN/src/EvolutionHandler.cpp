@@ -5,8 +5,8 @@ void EvolutionHandler::evolveNextGeneration( Uint32 generationSize, float chance
 		auto currentNetwork = bestNetwork_->copyAndMutate( chance, range );
 
 		for ( size_t j = 0; j < testData_.size(); j++ ) {
-			auto inputData = testData_.getInput( i );
-			auto outputData = testData_.getOutput( i );
+			auto inputData = testData_.getInput( j );
+			auto outputData = testData_.getOutput( j );
 
 			currentNetwork->reset();
 			currentNetwork->setInput( inputData );
@@ -15,7 +15,7 @@ void EvolutionHandler::evolveNextGeneration( Uint32 generationSize, float chance
 			
 			auto currentFitness = calculateFitness( actualOutput, outputData );
 
-			if ( currentFitness < bestFitness_ ) {
+			if ( currentFitness <= bestFitness_ ) {
 				bestNetwork_ = std::move( currentNetwork );
 				bestFitness_ = std::move( currentFitness );
 			}

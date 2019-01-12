@@ -41,34 +41,37 @@ int main( int argc, char* argv[] ) {
 	auto imageData = idxImages.getIdxObject<Uint8>();
 	auto labelData = idxLabels.getIdxObject<Uint8>();
 
-	std::vector<float> inputData( 28 * 28 );
-	std::vector<float> outputData( 10 );
-	
-	auto label = labelData.getData( 0 );
-	for ( size_t l = 0; l < 10; l++ ) {
-		if ( l == label ) {
-			outputData[l] = 1;
-		} else {
-			outputData[l] = 0;
+	for ( size_t i = 0; i < labelData.size(); i++ ) {
+		std::vector<float> inputData( 28 * 28 );
+		std::vector<float> outputData( 10 );
+		
+		auto label = labelData.getData( 0 );
+		for ( size_t l = 0; l < 10; l++ ) {
+			if ( l == label ) {
+				outputData[l] = 1;
+			} else {
+				outputData[l] = 0;
+			}
 		}
-	}
 
-	auto image = imageData.getIdxObject( i );
-	for ( size_t h = 0; h < 28; h++ ) {
-		auto row = image.getIdxObject( h );
-		for ( size_t w = 0; w < 28; w++ ) {
-			inputData[h * 28 + w] = row.getData( w );
+		auto image = imageData.getIdxObject( 0 );
+		for ( size_t h = 0; h < 28; h++ ) {
+			auto row = image.getIdxObject( h );
+			for ( size_t w = 0; w < 28; w++ ) {
+				inputData[h * 28 + w] = row.getData( w );
+			}
 		}
+		
+		TestDataPair tdp( std::move( inputData ), std::move( outputData ) );
+		tData.addTestDataPair( std::move( tdp ) );
 	}
-	
-	TestDataPair tdp( std::move( inputData ), std::move( outputData ) );
-	tData.addTestDataPair( std::move( tdp ) );
-
-	/*std::cout << std::to_string( label ) << std::endl;
-	printImage( image );*/
 
 	eHandler.addTestData( std::move( tData ) );
-	eHandler.evolveNextGeneration( 100, 0.1, 0.5 );
+
+	while ( eHandler.getFitness().getDifference() > 0.1 ) {
+		std::cout << "Fitness: " << std::to_string( eHandler.getFitness().getDifference() ) << std::endl;
+		eHandler.evolveNextGeneration( 20, 0.1, 0.5 );
+	}
 	
 	return 0;
 }

@@ -15,6 +15,14 @@ public:
 	// Copy constructor
 	Network( const Network& network );
 
+	Network& operator=( Network other ) {
+		if ( &other == this ) {
+			return *this;
+		}
+
+		return Network( other );
+	}
+
 	NetworkPtr copyAndMutate( const float chance, const float range ) const;
 
 	const Uint32 inputSize() const;
