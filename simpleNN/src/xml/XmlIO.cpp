@@ -1,4 +1,4 @@
-#include "XmlIO.h"
+#include "xml/XmlIO.h"
 
 XmlIO::XmlIO( const char* path ) : path_( path ) {
 }

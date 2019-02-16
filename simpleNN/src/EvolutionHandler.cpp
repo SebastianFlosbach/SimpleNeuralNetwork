@@ -1,8 +1,12 @@
 #include "EvolutionHandler.h"
 
 void EvolutionHandler::evolveNextGeneration( Uint32 generationSize, float chance, float range ) {
+	NetworkPtr currentBestNetwork;
+	Fitness currentBestFitness( bestNetwork_->outputSize() );
+
 	for ( size_t i = 0; i < generationSize; i++ ) {
 		auto currentNetwork = bestNetwork_->copyAndMutate( chance, range );
+		Fitness currentFitness( currentNetwork->outputSize(), 0.f );
 
 		for ( size_t j = 0; j < testData_.size(); j++ ) {
 			auto inputData = testData_.getInput( j );
@@ -13,13 +17,18 @@ void EvolutionHandler::evolveNextGeneration( Uint32 generationSize, float chance
 			currentNetwork->operate();
 			auto actualOutput = currentNetwork->getOutput();
 			
-			auto currentFitness = calculateFitness( actualOutput, outputData );
-
-			if ( currentFitness <= bestFitness_ ) {
-				bestNetwork_ = std::move( currentNetwork );
-				bestFitness_ = std::move( currentFitness );
-			}
+			currentFitness += calculateFitness( actualOutput, outputData );
 		}
+
+		if ( currentFitness <= currentBestFitness ) {
+			currentBestNetwork = std::move( currentNetwork );
+			currentBestFitness = std::move( currentFitness );
+		}
+	}
+
+	if ( currentBestFitness <= bestFitness_ ) {
+		bestNetwork_ = std::move( currentBestNetwork );
+		bestFitness_ = std::move( currentBestFitness );
 	}
 }
 

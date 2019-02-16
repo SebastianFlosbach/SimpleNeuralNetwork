@@ -1,6 +1,7 @@
 #include "Network.h"
 #include "IdxReader.h"
 #include "EvolutionHandler.h"
+#include "xml/XmlIO.h"
 
 #include <iostream>
 #include <cmath>
@@ -23,8 +24,8 @@ void printImage( IdxObject<Uint8>& image ) {
 
 int main( int argc, char* argv[] ) {
 
-	IdxReader idxImages( "t10k-images.idx" );
-	IdxReader idxLabels( "t10k-labels.idx" );
+	IdxReader idxImages( "train-images.idx" );
+	IdxReader idxLabels( "train-labels.idx" );
 
 	auto net = std::make_unique<Network>();
 
@@ -41,37 +42,38 @@ int main( int argc, char* argv[] ) {
 	auto imageData = idxImages.getIdxObject<Uint8>();
 	auto labelData = idxLabels.getIdxObject<Uint8>();
 
-	for ( size_t i = 0; i < labelData.size(); i++ ) {
-		std::vector<float> inputData( 28 * 28 );
-		std::vector<float> outputData( 10 );
-		
-		auto label = labelData.getData( 0 );
-		for ( size_t l = 0; l < 10; l++ ) {
-			if ( l == label ) {
-				outputData[l] = 1;
-			} else {
-				outputData[l] = 0;
-			}
+	std::vector<float> inputData( 28 * 28 );
+	std::vector<float> outputData( 10 );
+	
+	auto label = labelData.getData( 0 );
+	for ( size_t l = 0; l < 10; l++ ) {
+		if ( l == label ) {
+			outputData[l] = 1;
+		} else {
+			outputData[l] = 0;
 		}
-
-		auto image = imageData.getIdxObject( 0 );
-		for ( size_t h = 0; h < 28; h++ ) {
-			auto row = image.getIdxObject( h );
-			for ( size_t w = 0; w < 28; w++ ) {
-				inputData[h * 28 + w] = row.getData( w );
-			}
-		}
-		
-		TestDataPair tdp( std::move( inputData ), std::move( outputData ) );
-		tData.addTestDataPair( std::move( tdp ) );
 	}
+
+	auto image = imageData.getIdxObject( 0 );
+	for ( size_t h = 0; h < 28; h++ ) {
+		auto row = image.getIdxObject( h );
+		for ( size_t w = 0; w < 28; w++ ) {
+			inputData[h * 28 + w] = row.getData( w );
+		}
+	}
+	
+	TestDataPair tdp( std::move( inputData ), std::move( outputData ) );
+	tData.addTestDataPair( std::move( tdp ) );
 
 	eHandler.addTestData( std::move( tData ) );
 
-	while ( eHandler.getFitness().getDifference() > 0.1 ) {
+	while ( eHandler.getFitness().getDifference() > 1 ) {
 		std::cout << "Fitness: " << std::to_string( eHandler.getFitness().getDifference() ) << std::endl;
-		eHandler.evolveNextGeneration( 20, 0.1, 0.5 );
+		eHandler.evolveNextGeneration( 5, 0.1, 0.5 );
 	}
-	
+
+	XmlIO xml = XmlIO( "read_5" );
+	xml.saveNetwork( eHandler.getNetwork() );
+
 	return 0;
 }
