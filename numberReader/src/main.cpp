@@ -2,6 +2,7 @@
 #include "IdxReader.h"
 #include "EvolutionHandler.h"
 #include "xml/XmlIO.h"
+#include "idx_to_test_data.h"
 
 #include <iostream>
 #include <cmath>
@@ -34,36 +35,13 @@ int main( int argc, char* argv[] ) {
 	net->addNeuronToLayer( 1, 16 );
 	net->addNeuronToLayer( 2, 10 );
 	net->connectAllLayers();
-
-	TestData tData( net->inputSize(), net->outputSize() );
 	
 	EvolutionHandler eHandler( std::move( net ) );
 
 	auto imageData = idxImages.getIdxObject<Uint8>();
 	auto labelData = idxLabels.getIdxObject<Uint8>();
 
-	std::vector<float> inputData( 28 * 28 );
-	std::vector<float> outputData( 10 );
-	
-	auto label = labelData.getData( 0 );
-	for ( size_t l = 0; l < 10; l++ ) {
-		if ( l == label ) {
-			outputData[l] = 1;
-		} else {
-			outputData[l] = 0;
-		}
-	}
-
-	auto image = imageData.getIdxObject( 0 );
-	for ( size_t h = 0; h < 28; h++ ) {
-		auto row = image.getIdxObject( h );
-		for ( size_t w = 0; w < 28; w++ ) {
-			inputData[h * 28 + w] = row.getData( w );
-		}
-	}
-	
-	TestDataPair tdp( std::move( inputData ), std::move( outputData ) );
-	tData.addTestDataPair( std::move( tdp ) );
+	TestData tData = idx_to_test_data( imageData, labelData, net->inputSize(), net->outputSize() );
 
 	eHandler.addTestData( std::move( tData ) );
 
@@ -74,6 +52,11 @@ int main( int argc, char* argv[] ) {
 
 	XmlIO xml = XmlIO( "read_5" );
 	xml.saveNetwork( eHandler.getNetwork() );
+
+	Network bestNet = eHandler.getNetwork();
+
+	IdxReader checkDataImages( "t10k-images.idx" );
+	IdxReader checkDataLabels( "t10k-labels.idx" );
 
 	return 0;
 }
