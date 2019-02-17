@@ -3,14 +3,14 @@
 #include "TestData.h"
 #include "IdxObject.h"
 
-TestData idx_to_test_data( const IdxObject& imageData, const IdxObject& labelData, Uint32 inputSize, Uint32 outputSize ) {
+TestData idx_to_test_data( const IdxObject<Uint8>& imageData, const IdxObject<Uint8>& labelData, Uint32 inputSize, Uint32 outputSize, Uint32 limit ) {
 	TestData tData( inputSize, outputSize );
 
-	for ( size_t i = 0; i < imageData.size(); i++ ) {
+	for ( size_t i = 0; i < imageData.size() && i < limit; i++ ) {
 		std::vector<float> inputData( 28 * 28 );
 		std::vector<float> outputData( 10 );
 
-		auto label = labelData.getData( 0 );
+		auto label = labelData.getData( i );
 		for ( size_t l = 0; l < 10; l++ ) {
 			if ( l == label ) {
 				outputData[l] = 1;

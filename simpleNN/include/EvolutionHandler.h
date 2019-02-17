@@ -3,12 +3,16 @@
 #include "TestData.h"
 #include "Fitness.h"
 
+#include <thread>
+
 typedef unsigned int Uint32;
 
 class EvolutionHandler {
 	NetworkPtr bestNetwork_;
 	Fitness bestFitness_;
 	TestData testData_;
+
+	Uint32 threadCount_;
 
 	Fitness calculateFitness( std::vector<float> input, std::vector<float> output ) const;
 
@@ -26,6 +30,10 @@ public:
 
 	Network& getNetwork() {
 		return *bestNetwork_.get();
+	}
+
+	inline void setThreadCount( Uint32 threadCount ) {
+		threadCount_ = threadCount;
 	}
 
 	void evolveNextGeneration( Uint32 generationSize, float chance, float range );

@@ -36,18 +36,19 @@ int main( int argc, char* argv[] ) {
 	net->addNeuronToLayer( 2, 10 );
 	net->connectAllLayers();
 	
-	EvolutionHandler eHandler( std::move( net ) );
-
 	auto imageData = idxImages.getIdxObject<Uint8>();
 	auto labelData = idxLabels.getIdxObject<Uint8>();
 
-	TestData tData = idx_to_test_data( imageData, labelData, net->inputSize(), net->outputSize() );
+	TestData tData = idx_to_test_data( imageData, labelData, net->inputSize(), net->outputSize(), 1000 );	
+	
+	EvolutionHandler eHandler( std::move( net ) );
+	eHandler.setThreadCount( 4 );
 
 	eHandler.addTestData( std::move( tData ) );
 
 	while ( eHandler.getFitness().getDifference() > 1 ) {
 		std::cout << "Fitness: " << std::to_string( eHandler.getFitness().getDifference() ) << std::endl;
-		eHandler.evolveNextGeneration( 5, 0.1, 0.5 );
+		eHandler.evolveNextGeneration( 6, 0.3, 0.4 );
 	}
 
 	XmlIO xml = XmlIO( "read_5" );
