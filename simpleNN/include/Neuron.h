@@ -20,15 +20,15 @@ typedef unsigned int Uint32;
 		float currentInput_;
 
 	public:
-		Neuron( Uint32 id ) : id_( id ), bias_( 0 ) {
-		}
+		Neuron( Uint32 id );
 
 		inline const Uint32 id() const { return id_; }
 		inline const Uint32 size() const { return connections_.size(); }
 		inline const float getBias() const { return bias_; }
 		void setBias( float bias ) { bias_ = bias; }
 		const float getOutput() const;
-		void addConnection( float bias, NeuronPtr& target );
+		void addConnection( NeuronPtr& target );
+		void addConnection( NeuronPtr& target, float weight );
 		Connection* getConnection( Uint32 targetId );
 		void operateConnection();
 		void resetInput();

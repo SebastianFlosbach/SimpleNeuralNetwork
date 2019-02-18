@@ -44,6 +44,8 @@ struct Fitness {
 		for ( size_t i = 0; i < this->size(); i++ ) {
 			this->fitness_[i] += rhs.fitness()[i];
 		}
+
+		return *this;
 	}
 
 private:

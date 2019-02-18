@@ -76,7 +76,7 @@ NetworkPtr Network::copyAndMutate( const float chance, const float range ) const
 					}
 
 					auto targetNeuron = newLayer->getNeuron( c );
-					newNeuron->addConnection( weight, targetNeuron );
+					newNeuron->addConnection( targetNeuron, weight );
 				}
 			}
 		}
@@ -164,7 +164,7 @@ void Network::connectAllLayers() {
 		for ( size_t sourceNeuronId = 0; sourceNeuronId < sourceLayer->size(); sourceNeuronId++ ) {
 			auto sourceNeuron = sourceLayer->getNeuron( sourceNeuronId );
 			for ( size_t targetNeuronId = 0; targetNeuronId < targetLayer->size(); targetNeuronId++ ) {
-				sourceNeuron->addConnection( 1.0f, targetLayer->getNeuron( targetNeuronId ) );
+				sourceNeuron->addConnection( targetLayer->getNeuron( targetNeuronId ) );
 			}
 		}
 	}

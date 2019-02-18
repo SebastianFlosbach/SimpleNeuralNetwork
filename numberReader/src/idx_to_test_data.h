@@ -3,14 +3,19 @@
 #include "TestData.h"
 #include "IdxObject.h"
 
-TestData idx_to_test_data( const IdxObject<Uint8>& imageData, const IdxObject<Uint8>& labelData, Uint32 inputSize, Uint32 outputSize, Uint32 limit ) {
+TestData idx_to_test_data( const IdxObject<Uint8>& imageData, const IdxObject<Uint8>& labelData, Uint32 inputSize, Uint32 outputSize, Uint32 limit, int number = -1 ) {
 	TestData tData( inputSize, outputSize );
 
-	for ( size_t i = 0; i < imageData.size() && i < limit; i++ ) {
+	for ( size_t i = 0; i < imageData.size(); i++ ) {
 		std::vector<float> inputData( 28 * 28 );
 		std::vector<float> outputData( 10 );
 
 		auto label = labelData.getData( i );
+
+		if ( number != -1 && label != number ) {
+			continue;
+		}
+
 		for ( size_t l = 0; l < 10; l++ ) {
 			if ( l == label ) {
 				outputData[l] = 1;
@@ -29,6 +34,10 @@ TestData idx_to_test_data( const IdxObject<Uint8>& imageData, const IdxObject<Ui
 
 		TestDataPair tdp( std::move( inputData ), std::move( outputData ) );
 		tData.addTestDataPair( std::move( tdp ) );
+
+		if ( tData.size() == limit ) {
+			break;
+		}
 	}
 
 	return tData;
