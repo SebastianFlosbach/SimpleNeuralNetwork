@@ -58,7 +58,7 @@ inline bool operator <( const Fitness& lhs, const Fitness& rhs ) {
 	}
 
 	for ( size_t i = 0; i < lhs.size(); i++ ) {
-		if ( lhs.fitness()[i] > rhs.fitness()[i] ) {
+		if ( lhs.fitness()[i] >= rhs.fitness()[i] ) {
 			return false;
 		}
 	}
