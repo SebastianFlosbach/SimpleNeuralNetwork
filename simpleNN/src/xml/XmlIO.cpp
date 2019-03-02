@@ -11,7 +11,7 @@ void XmlIO::saveNetwork( const Network& network ) const {
 
 	auto networkNode = doc.append_child( "network" );
 
-	for ( size_t l = 0; l < network.size(); l++ ) {
+	for ( size_t l = 0; l < network.numberOfLayers(); l++ ) {
 		auto layer = network.getLayer( l );
 		auto xmlLayer = networkNode.append_child( "layer" );
 
@@ -28,15 +28,15 @@ void XmlIO::saveNetwork( const Network& network ) const {
 			auto neuronBias = xmlNeuron.append_attribute( "bias" );
 			neuronBias.set_value( neuron->getBias() );
 
-			for ( size_t c = 0; c < neuron->size(); c++ ) {
-				auto connection = neuron->getConnection( c );
+			for ( size_t c = 0; c < neuron->numberOfConnections(); c++ ) {
+				auto& connection = neuron->getConnection( c );
 				auto xmlConnection = xmlNeuron.append_child( "connection" );
 
 				auto connectionId = xmlConnection.append_attribute( "targetId" );
-				connectionId.set_value( connection->getTargetId() );
+				connectionId.set_value( connection.getTargetNeuron().id() );
 
 				auto connectionWeight = xmlConnection.append_attribute( "weight" );
-				connectionWeight.set_value( connection->getWeight() );
+				connectionWeight.set_value( connection.getWeight() );
 			}
 		}
 	}
@@ -44,6 +44,6 @@ void XmlIO::saveNetwork( const Network& network ) const {
 	doc.save_file( path_ );
 }
 
-NetworkPtr XmlIO::loadNetwork() const {
+Network XmlIO::loadNetwork() const {
 	throw std::runtime_error("[XmlIO::loadNetwork] not implemented");
 }

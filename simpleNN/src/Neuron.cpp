@@ -7,48 +7,42 @@
 
 
 float sigmoid( float arg ) {
-	return 1 / (1 + pow( 3, arg ));
+	return 1.0f / ( 1.0f + (float)pow( 3, arg ));
 }
 
 
-Neuron::Neuron( Uint32 id ) : id_( id ), bias_( getRandFloat( -1, 1 ) ) {
+Neuron::Neuron( Uint32 id ) : Neuron( id, 0 ) {
 }
 
-const float Neuron::getOutput() const {
-	return sigmoid( currentInput_ + this->bias_ );
+Neuron::Neuron( Uint32 id, float bias ) : id_( id ), bias_( bias ) {
 }
 
-void Neuron::addConnection( NeuronPtr& target ) {
-	connections_.emplace_back( target );
+Neuron::Neuron( Neuron&& other ) {
+	*this = std::move( other );
 }
 
-void Neuron::addConnection( NeuronPtr& target, float weight ) {
+Neuron& Neuron::operator=( Neuron&& other ) noexcept {
+	Neuron neuron = Neuron( other.id_ );
+
+	for ( size_t i = 0; other.numberOfConnections(); i++ ) {
+		neuron.connections_.emplace_back( std::move( other.connections_[i] ) );
+	}
+
+	return neuron;
+}
+
+void Neuron::addConnection( Neuron& target, float weight ) {
 	connections_.emplace_back( target, weight );
 }
 
-Connection* Neuron::getConnection( Uint32 targetId ) {
-	for ( size_t i = 0; i < size(); i++ ) {
-		if ( targetId == connections_[i].getTargetId() ) {
-			return &connections_[i];
-		}
+Connection& Neuron::getConnection( Uint32 targetId ) {
+	if ( targetId >= numberOfConnections() ) {
+		throw std::invalid_argument( "" );
 	}
-	return nullptr;
+
+	return connections_[targetId];
 }
 
-void Neuron::resetInput() {
-	currentInput_ = 0;
-}
-
-void Neuron::addToInput( float input ) {
-	currentInput_ += input;
-}
-
-void Neuron::setInput( float input ) {
-	currentInput_ = input;
-}
-
-void Neuron::operateConnection() {
-	for ( auto connection : connections_ ) {
-		connection.operate( getOutput() );
-	}
+Neuron Neuron::copy() const {
+	return Neuron( id_, bias_ );
 }

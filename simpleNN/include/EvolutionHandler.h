@@ -8,16 +8,16 @@
 typedef unsigned int Uint32;
 
 class EvolutionHandler {
-	NetworkPtr bestNetwork_;
+	Network bestNetwork_;
 	Fitness bestFitness_;
 	TestData testData_;
 
 	Uint32 threadCount_;
 
-	Fitness calculateFitness( std::vector<float> input, std::vector<float> output ) const;
+	Fitness calculateFitness( const std::vector<float>& input, const std::vector<float>& output ) const;
 
 public:
-	EvolutionHandler( NetworkPtr&& network ) : bestNetwork_( std::move( network ) ), testData_( bestNetwork_->inputSize(), bestNetwork_->outputSize() ), bestFitness_( bestNetwork_->outputSize() ) {
+	EvolutionHandler( Network&& network ) : bestNetwork_( std::move( network ) ), testData_( bestNetwork_.inputSize(), bestNetwork_.outputSize() ), bestFitness_( bestNetwork_.outputSize() ) {
 	}
 
 	void addTestData( TestData&& testData ) {
@@ -29,7 +29,7 @@ public:
 	}
 
 	Network& getNetwork() {
-		return *bestNetwork_.get();
+		return bestNetwork_;
 	}
 
 	inline void setThreadCount( Uint32 threadCount ) {

@@ -6,33 +6,33 @@
 
 typedef unsigned int Uint32;
 
+class Neuron;
+class Connection;
 
-	class Neuron;
-	class Connection;
+class Neuron {
+	Uint32 id_;
+	float bias_;
+	std::vector<Connection> connections_;
 
-	typedef std::shared_ptr<Neuron> NeuronPtr;
+public:
+	Neuron( Uint32 id );
+	Neuron( Uint32 id, float bias );
 
-	class Neuron {
-		Uint32 id_;
-		float bias_;
-		std::vector<Connection> connections_;
+	Neuron( const Neuron& other ) = delete;
+	Neuron& operator=( const Neuron& other ) = delete;
 
-		float currentInput_;
+	Neuron( Neuron&& other );
+	Neuron& operator=( Neuron&& other ) noexcept;
 
-	public:
-		Neuron( Uint32 id );
+	inline Uint32 id() const { return id_; }
 
-		inline const Uint32 id() const { return id_; }
-		inline const Uint32 size() const { return connections_.size(); }
-		inline const float getBias() const { return bias_; }
-		void setBias( float bias ) { bias_ = bias; }
-		const float getOutput() const;
-		void addConnection( NeuronPtr& target );
-		void addConnection( NeuronPtr& target, float weight );
-		Connection* getConnection( Uint32 targetId );
-		void operateConnection();
-		void resetInput();
-		void addToInput( float input );
-		void setInput( float input );
+	inline float getBias() const { return bias_; }
+	inline void setBias( float bias ) { bias_ = bias; }
 
-	};
+	// Connection
+	inline Uint32 numberOfConnections() const { return connections_.size(); }
+	void addConnection( Neuron& target, float weight );
+	Connection& getConnection( Uint32 targetId );
+
+	Neuron copy() const;
+};

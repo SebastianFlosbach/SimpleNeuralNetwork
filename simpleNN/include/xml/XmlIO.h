@@ -12,5 +12,5 @@ public:
 	XmlIO( const std::string& path );
 
 	void saveNetwork( const Network& network ) const;
-	NetworkPtr loadNetwork() const;
+	Network loadNetwork() const;
 };

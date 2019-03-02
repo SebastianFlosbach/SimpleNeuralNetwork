@@ -5,20 +5,17 @@
 
 
 class Neuron;
-typedef std::shared_ptr<Neuron> NeuronPtr;
+//typedef std::shared_ptr<Neuron> NeuronPtr;
 typedef unsigned int Uint32;
 
 class Connection {
 	float weight_;
-	std::weak_ptr<Neuron> target_;
+	Neuron& target_;
 
 public:
-	Connection( NeuronPtr target );
+	Connection( Neuron& target );
+	Connection( Neuron& target, float weight );
 
-	Connection( NeuronPtr target, float weight ) : weight_( weight ), target_( std::weak_ptr<Neuron>( target ) ) {
-	}
-
-	const float getWeight() const { return weight_; }
-	const Uint32 getTargetId() const;
-	void operate( float output );
+	inline const float getWeight() const { return weight_; }
+	const Neuron& getTargetNeuron() const;
 };

@@ -1,6 +1,5 @@
 CMAKE_MINIMUM_REQUIRED(VERSION 3.8)
 
-#set(simpleNN_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/include CACHE STRING "")
 
 project(simpleNN)
 
@@ -14,4 +13,4 @@ include_directories(include)
 add_library(${PROJECT_NAME} STATIC ${SOURCE})
 
 target_include_directories(${PROJECT_NAME} PUBLIC "include")
-target_link_libraries(${PROJECT_NAME} PUBLIC pugixml)
+target_link_libraries(${PROJECT_NAME} PUBLIC pugixml eigen)

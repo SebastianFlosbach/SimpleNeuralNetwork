@@ -1,47 +1,39 @@
 #pragma once 
 #include "Layer.h"
 #include "Connection.h"
+#include <Eigen/Dense>
 
 class Network;
 
-typedef std::unique_ptr<Network> NetworkPtr;
-
 class Network {
-	std::vector<LayerPtr> layers_;
+	mutable std::vector<Layer> layers_;
+	std::vector<float> input_;
+	Eigen::MatrixXd matrix_;
 
 public:
 	Network() = default;
 
 	// Copy constructor
-	Network( const Network& network );
+	Network( const Network& other );
+	Network& operator=( const Network& other );
 
-	Network& operator=( Network other ) {
-		if ( &other == this ) {
-			return *this;
-		}
+	// Move constructor
+	Network( Network&& other );
+	Network& operator=( Network&& other );
 
-		return Network( other );
-	}
-
-	NetworkPtr copyAndMutate( const float chance, const float range ) const;
+	Network copyAndMutate( const float chance, const float range ) const;
 
 	const Uint32 inputSize() const;
 	const Uint32 outputSize() const;
-	inline const Uint32 size() const { return layers_.size(); }
-	const Uint32 addLayer( const Uint32 count = 1 );
-	const Uint32 addNeuronToLayer( const Uint32 layerId, const Uint32 count = 1 );
-	void setNeuronBias( const Uint32 layerId, const Uint32 neuronId, float bias );
+	inline const Uint32 numberOfLayers() const { return layers_.size(); }
+
+	void addLayer( const Uint32 count );
+	Layer* addLayer();
+	Layer* getLayer( const Uint32 layerId ) const;
+
 	void setInput( const Uint32 neuronId, float value );
-	void setInput( const std::vector<float>& data );
+	void setInput( const std::vector<float>& input );
+
 	float getOutput( const Uint32 neuronId ) const;
 	const std::vector<float> getOutput() const;
-	void connectAllLayers();
-	void operate();
-	void reset();
-	void setConnection( const Uint32 sourcelayerId, const Uint32 sourceNeuronId, const Uint32 targetLayerId, const Uint32 targetNeuronId, const float bias );
-	const Connection* getConnection( const Uint32 sourcelayerId, const Uint32 sourceNeuronId, const Uint32 targetNeuronId ) const;
-	const Layer* getLayer( const Uint32 layerId ) const;
-
-	void save( const std::string& name ) const;
-
 };
