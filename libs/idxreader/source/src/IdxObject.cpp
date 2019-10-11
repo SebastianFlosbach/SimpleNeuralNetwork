@@ -1,5 +1,8 @@
 #include "IdxObject.h"
 
+#include <stdexcept>
+
+
 template <typename T>
 const IdxObject<T> IdxObject<T>::getIdxObject( Uint32 index ) const {
 	if ( numberOfDimensions() <= 1 ) {

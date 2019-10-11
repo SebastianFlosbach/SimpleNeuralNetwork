@@ -1,14 +1,14 @@
 CMAKE_MINIMUM_REQUIRED(VERSION 3.8)
 
-project(srcTest)
+project(simpleNN_test)
+
+add_definitions( -DSIMPLE_NN_IMPORTS )
 
 include_directories(${gtest_SOURCE_DIR}/include ${COMMON_INCLUDES})
-include_directories(${simpleNN_INCLUDE_DIR})
 
 add_executable(${PROJECT_NAME} main.cpp)
 
 target_link_libraries(${PROJECT_NAME} PRIVATE simpleNN gtest gtest_main)
 
 install(TARGETS ${PROJECT_NAME}
-		CONFIGURATIONS Debug
 		RUNTIME DESTINATION bin)

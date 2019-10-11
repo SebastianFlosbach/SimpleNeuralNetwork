@@ -2,4 +2,7 @@
 
 #include "simpleNN_export.h"
 
-SIMPLE_NN_EXPORTS void create();
+#include "CSimpleNN.h"
+
+
+SIMPLE_NN_EXPORTS CSimpleNN_ptr create( uint32_t argn, const Layer layer... );
