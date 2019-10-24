@@ -7,6 +7,7 @@ class Layer {
 public:
 	Layer() = default;
 	Layer( const Eigen::MatrixXf connections, const Eigen::VectorXf bias );
+	Layer(const Eigen::VectorXf bias);
 
 	Eigen::VectorXf getOutput( const Eigen::VectorXf& input ) const;
 
