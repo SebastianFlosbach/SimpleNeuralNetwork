@@ -15,16 +15,15 @@ Layer::Layer(const Eigen::VectorXf bias) {
 
 Eigen::VectorXf Layer::getOutput(const Eigen::VectorXf& input) const
 {
-	Eigen::VectorXf tmp = static_cast<Eigen::VectorXf>(connections_ * input) + bias_;
-	return sigmoid(tmp);
+	return static_cast<Eigen::VectorXf>(connections_ * sigmoid(input + bias_));
 }
 
 Eigen::VectorXf sigmoid(const Eigen::VectorXf& input) {
-	//Eigen::VectorXf result(input.size());
+	Eigen::VectorXf result(input.size());
 
-	//for (Eigen::Index i = 0; i < input.size(); i++) {
-	//	result(i) = 1 / (1 + powf(2.f, input(i)));
-	//}
+	for (Eigen::Index i = 0; i < input.size(); i++) {
+		result(i) = 1 / (1 + powf(2.f, input(i)));
+	}
 
-	return input;
+	return result;
 }

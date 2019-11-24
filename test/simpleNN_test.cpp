@@ -13,7 +13,7 @@ TEST(simpleNN_test, Init) {
 	c1(1, 0) = 3;
 	c1(1, 1) = 4;
 
-	std::cout << c1;
+	std::cout << c1 << std::endl;
 
 	Eigen::VectorXf b1(2);
 	b1(0) = 1;
@@ -31,11 +31,13 @@ TEST(simpleNN_test, Init) {
 	layers.push_back(l1);
 	layers.push_back(l2);
 
-	auto net = create(2, layers.data());
+	auto net = SimpleNN::create(2, layers.data());
 
 	Eigen::VectorXf input(2);
 	input(0) = 1;
 	input(1) = 2;
 
 	auto output = net->getOutput(input);
+
+	std::cout << output << std::endl;
 }
