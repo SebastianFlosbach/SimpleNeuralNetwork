@@ -18,5 +18,6 @@ private:
 
 };
 
+
 typedef std::unique_ptr<CSimpleNN> CSimpleNN_ptr;
 typedef std::shared_ptr<CSimpleNN> CSimpleNN_sptr;
