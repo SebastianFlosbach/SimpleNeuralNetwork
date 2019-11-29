@@ -3,15 +3,15 @@
 #include <memory>
 #include <vector>
 
-#include <eigen/Dense>
 #include "Layer.h"
+#include "ISimpleNN.h"
 
 
-class CSimpleNN {
+class CSimpleNN : public ISimpleNN {
 public:
 	CSimpleNN( std::vector<Layer> layers );
 
-	Eigen::VectorXf getOutput( const Eigen::VectorXf& input );
+	Eigen::VectorXf getOutput( const Eigen::VectorXf& input ) override;
 
 private:
 	std::vector<Layer> layers_;

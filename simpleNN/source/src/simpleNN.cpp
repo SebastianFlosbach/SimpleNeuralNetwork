@@ -1,12 +1,14 @@
 #include "simpleNN.h"
 
 
-namespace SimpleNN {
+SimpleNNFactory* CreateSimpleNNFactory() {
+	return new SimpleNNFactory();
+}
 
-
-	SimpleNNFactory createFactory() {
-		return SimpleNNFactory();
+void DestroySimpleNNFactory(SimpleNNFactory* factory) {
+	if (factory == nullptr) {
+		return;
 	}
 
-
+	delete factory;
 }

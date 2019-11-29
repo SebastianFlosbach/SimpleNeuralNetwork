@@ -6,8 +6,8 @@
 
 
 TEST(simpleNN_test, Init) {
-	SimpleNNFactory factory = SimpleNNFactory();
+	SimpleNNFactory* pFactory = CreateSimpleNNFactory();
 
 	
-
+	DestroySimpleNNFactory(pFactory);
 }

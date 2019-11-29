@@ -6,7 +6,8 @@
 class SimpleNNData {
 public:
 	void addLayer( uint32_t neuronCount );
-	const uint32* getLayerNeuronCounts() const;
+	const uint32_t* getLayerNeuronCounts() const;
+	size_t size() const;
 
 private:
 	std::vector<uint32_t> neuronLayerCount;
