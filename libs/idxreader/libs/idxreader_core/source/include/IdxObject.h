@@ -32,7 +32,7 @@ struct IdxObject {
 		if ( *referenceCounter_ <= 0 ) {
 			delete[] data_;
 		} else {
-			*referenceCounter_--;
+			(*referenceCounter_)--;
 		}
 	}
 
@@ -44,7 +44,7 @@ struct IdxObject {
 		return header_.sizeOfDimensions_[0];
 	}
 
-	const T getData( const Uint32 index ) const {
+	T getData( const Uint32 index ) const {
 		return data_[startIndex_ + index];
 	}
 
@@ -55,7 +55,7 @@ private:
 		if ( !referenceCounter ) {
 			referenceCounter_ = new Uint32( 0 );
 		} else {
-			*referenceCounter_++;
+			(*referenceCounter_)++;
 		}
 	}
 

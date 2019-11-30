@@ -1,11 +1,11 @@
 #include "idxreader.h"
 
 
-IdxReader* createIdxReader(const std::string& path) {
+IdxReader* CreateIdxReader(const std::string& path) {
 	return new IdxReader(path);
 }
 
-void destroyIdxReader(IdxReader* idxReader) {
+void DestroyIdxReader(IdxReader* idxReader) {
 	if (idxReader == nullptr) {
 		return;
 	}

@@ -5,5 +5,5 @@
 #include "CIdxReader.h"
 
 
-IDX_READER_EXPORTS IdxReader* createIdxReader(const std::string& path);
-IDX_READER_EXPORTS void destroyIdxReader(IdxReader* idxReader);
+IDX_READER_EXPORTS IdxReader* CreateIdxReader(const std::string& path);
+IDX_READER_EXPORTS void DestroyIdxReader(IdxReader* idxReader);

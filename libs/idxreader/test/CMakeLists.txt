@@ -17,4 +17,4 @@ configure_file( "data/idxTest_3D.idx" "${CMAKE_CURRENT_BINARY_DIR}/data/idxTest_
 install(TARGETS ${PROJECT_NAME}
 		RUNTIME DESTINATION bin)
 
-install(DIRECTORY "${CMAKE_CURRENT_LIST_DIR}/data/" DESTINATION "bin/data/" )
+install(DIRECTORY "data/" DESTINATION "bin/data/" )

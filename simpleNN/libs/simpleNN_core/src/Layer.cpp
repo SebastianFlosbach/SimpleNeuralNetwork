@@ -25,7 +25,7 @@ Eigen::VectorXf sigmoid(const Eigen::VectorXf& input) {
 	Eigen::VectorXf result(input.size());
 
 	for (Eigen::Index i = 0; i < input.size(); i++) {
-		result(i) = 1 / (1 + powf(2.f, input(i)));
+		result(i) = 1.f / (1.f + powf(2.f, -input(i)));
 	}
 
 	return result;
