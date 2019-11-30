@@ -1,6 +1,9 @@
 #include "Layer.h"
 
+#include <cstdlib>
+#include <ctime>
 #include <math.h>
+
 
 Eigen::VectorXf sigmoid(const Eigen::VectorXf& input);
 
@@ -26,4 +29,30 @@ Eigen::VectorXf sigmoid(const Eigen::VectorXf& input) {
 	}
 
 	return result;
+}
+
+float randomFloat() {
+	return float(rand()) / (float(RAND_MAX) + 1.f);
+}
+
+Layer Layer::copyAndMutate(float chance, float range) const {
+	Eigen::VectorXf bias = bias_;
+
+	// Initialize vector with values between -1 and 1
+	Eigen::VectorXf biasMutation = Eigen::VectorXf::Random(bias.size());
+
+	srand(static_cast<unsigned int>(clock()));
+
+	// Because not every value should be mutated, we get a random number for each entry and only keep the entry if the random number is below the given chance. Otherwise its set to zero
+	for (size_t i = 0; i < bias.size(); i++) {
+		if (randomFloat() > chance) {
+			biasMutation(i) = 0;
+		}
+	}
+
+	// Scale every entry to be in the given range
+	biasMutation *= Eigen::VectorXf(biasMutation.size()).setConstant(range);
+
+	// Apply the mutation to our bias
+	bias += biasMutation;
 }

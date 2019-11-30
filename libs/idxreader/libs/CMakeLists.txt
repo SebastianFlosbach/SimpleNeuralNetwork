@@ -1,3 +1,3 @@
 CMAKE_MINIMUM_REQUIRED(VERSION 3.8)
 
-add_subdirectory("idxreader")
+add_subdirectory("idxreader_core")

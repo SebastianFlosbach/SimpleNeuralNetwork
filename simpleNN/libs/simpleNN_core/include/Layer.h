@@ -10,6 +10,7 @@ public:
 	Layer(const Eigen::VectorXf bias);
 
 	Eigen::VectorXf getOutput( const Eigen::VectorXf& input ) const;
+	Layer copyAndMutate(float chance, float range) const;
 
 private:
 	Eigen::MatrixXf connections_;

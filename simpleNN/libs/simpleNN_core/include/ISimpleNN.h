@@ -6,7 +6,8 @@
 
 class ISimpleNN {
 public:
-	virtual Eigen::VectorXf getOutput(const Eigen::VectorXf& input) = 0;
+	virtual Eigen::VectorXf getOutput(const Eigen::VectorXf& input) const = 0;
+	virtual ISimpleNN_ptr copyAndMutate( float chance, float range ) const = 0;
 
 };
 

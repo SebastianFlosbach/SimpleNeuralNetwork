@@ -1,21 +1,9 @@
 #pragma once
-#include <string>
-#include <vector>
 
-#include "IdxObject.h"
+#include "idxReader_exports.h"
 
-typedef unsigned char Uint8;
+#include "CIdxReader.h"
 
-class IdxReader {
-	std::string path_;
 
-public:
-	IdxReader( const std::string& path ) : path_( path ) {
-	}
-
-	const IdxType getType() const;
-
-	template <typename T>
-	const IdxObject<T> getIdxObject() const;
-
-};
+IDX_READER_EXPORTS IdxReader* createIdxReader(const std::string& path);
+IDX_READER_EXPORTS void destroyIdxReader(IdxReader* idxReader);

@@ -11,7 +11,8 @@ class CSimpleNN : public ISimpleNN {
 public:
 	CSimpleNN( std::vector<Layer> layers );
 
-	Eigen::VectorXf getOutput( const Eigen::VectorXf& input ) override;
+	Eigen::VectorXf getOutput( const Eigen::VectorXf& input ) const override;
+	ISimpleNN_ptr copyAndMutate(float chance, float range) const override;
 
 private:
 	std::vector<Layer> layers_;
