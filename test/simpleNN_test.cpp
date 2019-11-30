@@ -67,3 +67,18 @@ TEST(simpleNN_test, GetOutput) {
 
 	DestroySimpleNNFactory(pFactory);
 }
+
+TEST(simpleNN_test, Mutate) {
+	SimpleNNFactory* pFactory = CreateSimpleNNFactory();
+
+	SimpleNNData layerData = SimpleNNData();
+	layerData.addLayer(2);
+	layerData.addLayer(1);
+	layerData.addLayer(4);
+	layerData.addLayer(3);
+
+	ISimpleNN_ptr nn = pFactory->createSimpleNN(layerData);
+	ISimpleNN_ptr mutatedNN = nn->copyAndMutate(0.5f, 1.f);
+
+	DestroySimpleNNFactory(pFactory);
+}

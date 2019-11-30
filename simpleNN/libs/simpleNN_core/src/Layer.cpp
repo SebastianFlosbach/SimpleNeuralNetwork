@@ -32,27 +32,32 @@ Eigen::VectorXf sigmoid(const Eigen::VectorXf& input) {
 }
 
 float randomFloat() {
-	return float(rand()) / (float(RAND_MAX) + 1.f);
+	return float(rand()) / float(RAND_MAX);
+}
+
+float randomFloat(float min, float max) {
+	return (max - min) * (float(rand()) / float(RAND_MAX)) + min;
 }
 
 Layer Layer::copyAndMutate(float chance, float range) const {
 	Eigen::VectorXf bias = bias_;
-
-	// Initialize vector with values between -1 and 1
-	Eigen::VectorXf biasMutation = Eigen::VectorXf::Random(bias.size());
+	Eigen::MatrixXf connections = connections_;
 
 	srand(static_cast<unsigned int>(clock()));
 
-	// Because not every value should be mutated, we get a random number for each entry and only keep the entry if the random number is below the given chance. Otherwise its set to zero
-	for (size_t i = 0; i < bias.size(); i++) {
-		if (randomFloat() > chance) {
-			biasMutation(i) = 0;
+	for (Eigen::Index i = 0; i < bias.size(); i++) {
+		if (randomFloat() <= chance) {
+			bias(i) += randomFloat(-range, range);
 		}
 	}
 
-	// Scale every entry to be in the given range
-	biasMutation *= Eigen::VectorXf(biasMutation.size()).setConstant(range);
+	for (Eigen::Index x = 0; x < connections.cols(); x++) {
+		for (Eigen::Index y = 0; y < connections.rows(); y++) {
+			if (randomFloat() <= chance) {
+				connections(y, x) += randomFloat(-range, range);
+			}
+		}
+	}
 
-	// Apply the mutation to our bias
-	bias += biasMutation;
+	return Layer(connections, bias);
 }
