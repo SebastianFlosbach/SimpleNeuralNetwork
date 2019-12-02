@@ -1,9 +1,11 @@
 #pragma once
 
-#include <memory>
-#include <vector>
-
 #include "ISimpleNNTrainer.h"
+
+#include <memory>
+#include <map>
+
+#include "IFitness.h"
 
 
 class CSimpleNNTrainer : public ISimpleNNTrainer {
@@ -23,7 +25,7 @@ public:
 	const ISimpleNN* getCurrentBest() const override;
 
 private:
-	std::vector<ISimpleNN_ptr> generation_;
+	std::map<ISimpleNN_ptr, IFitness> generation_;
 	uint32_t generationSize_;
 
 	float chance_;

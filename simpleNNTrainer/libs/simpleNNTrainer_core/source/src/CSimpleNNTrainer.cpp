@@ -15,5 +15,9 @@ void CSimpleNNTrainer::test( const Eigen::VectorXf& input, const Eigen::VectorXf
 }
 
 const ISimpleNN* CSimpleNNTrainer::getCurrentBest() const {
-	return generation_[0].get();
+	ISimpleNN* best = generation_[0].first.get();
+
+	for( size_t i = 1; i < generation_.size(); i++ ) {
+		
+	}
 }
