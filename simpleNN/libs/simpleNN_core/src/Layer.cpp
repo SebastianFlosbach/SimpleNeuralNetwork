@@ -43,8 +43,6 @@ Layer Layer::copyAndMutate(float chance, float range) const {
 	Eigen::VectorXf bias = bias_;
 	Eigen::MatrixXf connections = connections_;
 
-	srand(static_cast<unsigned int>(clock()));
-
 	for (Eigen::Index i = 0; i < bias.size(); i++) {
 		if (randomFloat() <= chance) {
 			bias(i) += randomFloat(-range, range);

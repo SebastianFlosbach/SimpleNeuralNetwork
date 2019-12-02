@@ -1,8 +1,12 @@
 #pragma once
 
+#include <ctime>
 #include <simpleNN.h>
 #include <idxreader.h>
 #include <iostream>
+
+#include "DataPrinter.h"
+
 
 uint32_t vectorToNumber(const Eigen::VectorXf& vec ) {
 	uint32_t number = 0;
@@ -19,6 +23,8 @@ uint32_t vectorToNumber(const Eigen::VectorXf& vec ) {
 }
 
 int main() {
+	srand( static_cast<unsigned int>(clock()) );
+
 	IdxReader* pImageReader = CreateIdxReader("data\\train-images.idx");
 	IdxReader* pLabelReader = CreateIdxReader("data\\train-labels.idx");
 
@@ -47,6 +53,8 @@ int main() {
 
 		auto output = nn->getOutput(pixelData);
 		std::cout << vectorToNumber(output) << " : " << (int)labels.getData(i) << std::endl;
+
+		std::cin.get();
 	}
 
 }
