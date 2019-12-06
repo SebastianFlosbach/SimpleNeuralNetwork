@@ -3,7 +3,7 @@
 #include "CSimpleNN.h"
 
 
-ISimpleNN_ptr SimpleNNFactory::createSimpleNN(const SimpleNNData& data) {
+CSimpleNN_ptr SimpleNNFactory::createSimpleNN(const SimpleNNData& data) {
 	auto* layerData = data.getLayerNeuronCounts();
 	std::vector<Layer> layers = std::vector<Layer>(data.size());
 
@@ -17,5 +17,5 @@ ISimpleNN_ptr SimpleNNFactory::createSimpleNN(const SimpleNNData& data) {
 	Eigen::VectorXf biasVector = Eigen::VectorXf::Random(layerData[data.size() - 1]);
 	layers[data.size() - 1] = Layer(connectionMatrix, biasVector);
 
-	return ISimpleNN_ptr(new CSimpleNN(layers));
+	return std::make_unique<CSimpleNN>(layers);
 }

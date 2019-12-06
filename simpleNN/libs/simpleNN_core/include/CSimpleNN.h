@@ -4,21 +4,26 @@
 #include <vector>
 
 #include "Layer.h"
-#include "ISimpleNN.h"
+#include "CSimpleNN.h"
 
 
-class CSimpleNN : public ISimpleNN {
+class CSimpleNN;
+
+typedef std::unique_ptr<CSimpleNN> CSimpleNN_ptr;
+typedef std::shared_ptr<CSimpleNN> CSimpleNN_sptr;
+
+
+class CSimpleNN {
 public:
 	CSimpleNN( std::vector<Layer> layers );
 
-	Eigen::VectorXf getOutput( const Eigen::VectorXf& input ) const override;
-	ISimpleNN_ptr copyAndMutate(float chance, float range) const override;
+	Eigen::VectorXf getOutput( const Eigen::VectorXf& input ) const;
+	CSimpleNN_ptr copyAndMutate(float chance, float range) const;
+
+	uint32_t getOutputSize() const;
+	uint32_t getInputSize() const;
 
 private:
 	std::vector<Layer> layers_;
 
 };
-
-
-typedef std::unique_ptr<CSimpleNN> CSimpleNN_ptr;
-typedef std::shared_ptr<CSimpleNN> CSimpleNN_sptr;

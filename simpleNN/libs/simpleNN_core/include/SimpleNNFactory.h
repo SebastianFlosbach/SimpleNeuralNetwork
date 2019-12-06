@@ -1,11 +1,11 @@
 #pragma once
 
-#include "ISimpleNN.h"
+#include "CSimpleNN.h"
 #include "SimpleNNData.h"
 
 
 class SimpleNNFactory {
 public:
-	ISimpleNN_ptr createSimpleNN( const SimpleNNData& data );
+	CSimpleNN_ptr createSimpleNN( const SimpleNNData& data );
 
 };

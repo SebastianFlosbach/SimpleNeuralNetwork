@@ -13,7 +13,7 @@ Eigen::VectorXf CSimpleNN::getOutput( const Eigen::VectorXf& input ) const {
 	return output;
 }
 
-ISimpleNN_ptr CSimpleNN::copyAndMutate(float chance, float range) const {
+CSimpleNN_ptr CSimpleNN::copyAndMutate(float chance, float range) const {
 	std::vector<Layer> layers = std::vector<Layer>(layers_.size());
 
 	for (size_t i = 0; i < layers_.size(); i++) {
@@ -21,4 +21,12 @@ ISimpleNN_ptr CSimpleNN::copyAndMutate(float chance, float range) const {
 	}
 
 	return CSimpleNN_ptr(new CSimpleNN(layers));
+}
+
+uint32_t CSimpleNN::getOutputSize() const {
+	return layers_.front().getInputSize();
+}
+
+uint32_t CSimpleNN::getInputSize() const {
+	return layers_.back().getOutputSize();
 }

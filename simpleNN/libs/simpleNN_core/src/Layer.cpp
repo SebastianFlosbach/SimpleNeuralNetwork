@@ -59,3 +59,11 @@ Layer Layer::copyAndMutate(float chance, float range) const {
 
 	return Layer(connections, bias);
 }
+
+uint32_t Layer::getInputSize() const {
+	return bias_.size();
+}
+
+uint32_t Layer::getOutputSize() const {
+	return connections_.rows();
+}

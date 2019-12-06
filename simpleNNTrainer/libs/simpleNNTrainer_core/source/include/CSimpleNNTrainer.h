@@ -1,14 +1,13 @@
 #pragma once
 
-#include "ISimpleNNTrainer.h"
-
 #include <memory>
-#include <map>
+#include <vector>
+#include <CSimpleNN.h>
 
-#include "IFitness.h"
+#include "Fitness.h"
 
 
-class CSimpleNNTrainer : public ISimpleNNTrainer {
+class CSimpleNNTrainer {
 public:
 	CSimpleNNTrainer( uint32_t generationSize, float chance, float range ) : generationSize_( generationSize ), chance_( chance ), range_( range ) {
 	}
@@ -19,13 +18,14 @@ public:
 	CSimpleNNTrainer( CSimpleNNTrainer&& other ) = default;
 	CSimpleNNTrainer& operator=( CSimpleNNTrainer&& other ) = default;
 
-	void generateNextGeneration() override;
-	void test(const Eigen::VectorXf& input, const Eigen::VectorXf& expectedOutput) override;
+	void generateNextGeneration();
+	void generateNextGeneration( const CSimpleNN& network );
+	void test(const Eigen::VectorXf& input, const Eigen::VectorXf& expectedOutput);
 
-	const ISimpleNN* getCurrentBest() const override;
+	const CSimpleNN* getCurrentBest() const;
 
 private:
-	std::map<ISimpleNN_ptr, IFitness> generation_;
+	std::vector<std::pair<CSimpleNN_ptr, Fitness>> generation_;
 	uint32_t generationSize_;
 
 	float chance_;

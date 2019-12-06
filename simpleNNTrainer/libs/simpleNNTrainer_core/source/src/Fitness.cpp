@@ -1,7 +1,12 @@
 #include "Fitness.h"
 
 
-bool Fitness::operator>( const IFitness& right ) {
+Fitness& Fitness::operator+=( const Fitness& right ) {
+	difference_ += static_cast<const Fitness&>(right).difference_;
+	return *this;
+}
+
+bool Fitness::operator>( const Fitness& right ) {
 	for( Eigen::Index i = 0; i < difference_.size(); i++ ) {
 		if( difference_[i] > static_cast<const Fitness&>(right).difference_[i] ) {
 			return true;
@@ -11,7 +16,7 @@ bool Fitness::operator>( const IFitness& right ) {
 	return false;
 }
 
-bool Fitness::operator<( const IFitness& right ) {
+bool Fitness::operator<( const Fitness& right ) {
 	for( Eigen::Index i = 0; i < difference_.size(); i++ ) {
 		if( difference_[i] >= static_cast<const Fitness&>(right).difference_[i] ) {
 			return false;
@@ -21,7 +26,7 @@ bool Fitness::operator<( const IFitness& right ) {
 	return true;
 }
 
-bool Fitness::operator>=( const IFitness& right ) {
+bool Fitness::operator>=( const Fitness& right ) {
 	for( Eigen::Index i = 0; i < difference_.size(); i++ ) {
 		if( difference_[i] >= static_cast<const Fitness&>(right).difference_[i] ) {
 			return true;
@@ -31,7 +36,7 @@ bool Fitness::operator>=( const IFitness& right ) {
 	return false;
 }
 
-bool Fitness::operator<=( const IFitness& right ) {
+bool Fitness::operator<=( const Fitness& right ) {
 	for( Eigen::Index i = 0; i < difference_.size(); i++ ) {
 		if( difference_[i] > static_cast<const Fitness&>(right).difference_[i] ) {
 			return false;

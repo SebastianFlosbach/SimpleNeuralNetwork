@@ -1,11 +1,13 @@
 #pragma once
 
-#include "IFitness.h"
 #include <eigen/Dense>
 
 
-class Fitness : public IFitness {
+class Fitness {
 public:
+	Fitness(uint32_t size) noexcept : difference_(Eigen::VectorXf::Zero(size)) {
+	}
+
 	Fitness( const Eigen::VectorXf& difference ) noexcept : difference_( difference ) {
 	}
 
@@ -21,11 +23,13 @@ public:
 		}
 	}
 
-	bool operator>( const IFitness& right ) override;
-	bool operator<( const IFitness& right ) override;
+	Fitness& operator+=( const Fitness& right );
 
-	bool operator>=( const IFitness& right ) override;
-	bool operator<=( const IFitness& right ) override;
+	bool operator>( const Fitness& right );
+	bool operator<( const Fitness& right );
+
+	bool operator>=( const Fitness& right );
+	bool operator<=( const Fitness& right );
 
 private:
 	Eigen::VectorXf difference_;
