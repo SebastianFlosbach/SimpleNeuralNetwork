@@ -3,11 +3,11 @@
 #include "CSimpleNNTrainer.h"
 
 
-ISimpleNNTrainer* CreateSimpleNNTrainer( uint32_t generationSize, float chance, float range ) {
+CSimpleNNTrainer* CreateSimpleNNTrainer( uint32_t generationSize, float chance, float range ) {
 	return new CSimpleNNTrainer( generationSize, chance, range );
 }
 
-void DestroySimpleNNTrainer( ISimpleNNTrainer* trainer ) {
+void DestroySimpleNNTrainer( CSimpleNNTrainer* trainer ) {
 	if( trainer == nullptr ) {
 		return;
 	}

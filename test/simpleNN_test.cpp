@@ -45,7 +45,7 @@ TEST(simpleNN_test, CreateSimpleNN) {
 	layerData.addLayer(4);
 	layerData.addLayer(3);
 
-	ISimpleNN_ptr nn = pFactory->createSimpleNN(layerData);
+	CSimpleNN_ptr nn = pFactory->createSimpleNN(layerData);
 
 	DestroySimpleNNFactory(pFactory);
 }
@@ -59,7 +59,7 @@ TEST(simpleNN_test, GetOutput) {
 	layerData.addLayer(4);
 	layerData.addLayer(3);
 
-	ISimpleNN_ptr nn = pFactory->createSimpleNN(layerData);
+	CSimpleNN_ptr nn = pFactory->createSimpleNN(layerData);
 
 	Eigen::VectorXf input = Eigen::VectorXf::Random(2);
 
@@ -77,8 +77,8 @@ TEST(simpleNN_test, Mutate) {
 	layerData.addLayer(4);
 	layerData.addLayer(3);
 
-	ISimpleNN_ptr nn = pFactory->createSimpleNN(layerData);
-	ISimpleNN_ptr mutatedNN = nn->copyAndMutate(0.5f, 1.f);
+	CSimpleNN_ptr nn = pFactory->createSimpleNN(layerData);
+	CSimpleNN_ptr mutatedNN = nn->copyAndMutate(0.5f, 1.f);
 
 	DestroySimpleNNFactory(pFactory);
 }

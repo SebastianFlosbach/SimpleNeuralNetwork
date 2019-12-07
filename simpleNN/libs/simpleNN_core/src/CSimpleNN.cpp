@@ -23,6 +23,16 @@ CSimpleNN_ptr CSimpleNN::copyAndMutate(float chance, float range) const {
 	return CSimpleNN_ptr(new CSimpleNN(layers));
 }
 
+CSimpleNN_ptr CSimpleNN::copy() const {
+	std::vector<Layer> layers = std::vector<Layer>( layers_.size() );
+
+	for( size_t i = 0; i < layers_.size(); i++ ) {
+		layers[i] = layers_[i];
+	}
+
+	return CSimpleNN_ptr( new CSimpleNN( layers ) );
+}
+
 uint32_t CSimpleNN::getOutputSize() const {
 	return layers_.front().getInputSize();
 }

@@ -1,14 +1,24 @@
 #include "Fitness.h"
 
 
+float Fitness::totalDifference() const {
+	float totalDifference = 0;
+
+	for( size_t i = 0; i < difference_.size(); i++ ) {
+		totalDifference += difference_[i];
+	}
+
+	return totalDifference;
+}
+
 Fitness& Fitness::operator+=( const Fitness& right ) {
-	difference_ += static_cast<const Fitness&>(right).difference_;
+	difference_ += right.difference_;
 	return *this;
 }
 
-bool Fitness::operator>( const Fitness& right ) {
+bool Fitness::operator>( const Fitness& right ) const {
 	for( Eigen::Index i = 0; i < difference_.size(); i++ ) {
-		if( difference_[i] > static_cast<const Fitness&>(right).difference_[i] ) {
+		if( difference_[i] > right.difference_[i] ) {
 			return true;
 		}
 	}
@@ -16,9 +26,9 @@ bool Fitness::operator>( const Fitness& right ) {
 	return false;
 }
 
-bool Fitness::operator<( const Fitness& right ) {
+bool Fitness::operator<( const Fitness& right ) const {
 	for( Eigen::Index i = 0; i < difference_.size(); i++ ) {
-		if( difference_[i] >= static_cast<const Fitness&>(right).difference_[i] ) {
+		if( difference_[i] >= right.difference_[i] ) {
 			return false;
 		}
 	}
@@ -26,9 +36,9 @@ bool Fitness::operator<( const Fitness& right ) {
 	return true;
 }
 
-bool Fitness::operator>=( const Fitness& right ) {
+bool Fitness::operator>=( const Fitness& right ) const {
 	for( Eigen::Index i = 0; i < difference_.size(); i++ ) {
-		if( difference_[i] >= static_cast<const Fitness&>(right).difference_[i] ) {
+		if( difference_[i] >= right.difference_[i] ) {
 			return true;
 		}
 	}
@@ -36,9 +46,9 @@ bool Fitness::operator>=( const Fitness& right ) {
 	return false;
 }
 
-bool Fitness::operator<=( const Fitness& right ) {
+bool Fitness::operator<=( const Fitness& right ) const {
 	for( Eigen::Index i = 0; i < difference_.size(); i++ ) {
-		if( difference_[i] > static_cast<const Fitness&>(right).difference_[i] ) {
+		if( difference_[i] > right.difference_[i] ) {
 			return false;
 		}
 	}

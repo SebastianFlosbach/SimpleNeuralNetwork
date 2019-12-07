@@ -5,6 +5,9 @@
 
 class Fitness {
 public:
+	Fitness() noexcept : difference_(Eigen::VectorXf::Zero(0)) {
+	}
+
 	Fitness(uint32_t size) noexcept : difference_(Eigen::VectorXf::Zero(size)) {
 	}
 
@@ -19,17 +22,19 @@ public:
 		difference_ = Eigen::VectorXf( value.size() );
 
 		for( Eigen::Index i = 0; i < value.size(); i++ ) {
-			difference_[i] = expected[i] - value[i];
+			difference_[i] = abs(expected[i] - value[i]);
 		}
 	}
 
+	float totalDifference() const;
+
 	Fitness& operator+=( const Fitness& right );
 
-	bool operator>( const Fitness& right );
-	bool operator<( const Fitness& right );
+	bool operator>( const Fitness& right ) const;
+	bool operator<( const Fitness& right ) const;
 
-	bool operator>=( const Fitness& right );
-	bool operator<=( const Fitness& right );
+	bool operator>=( const Fitness& right ) const;
+	bool operator<=( const Fitness& right ) const;
 
 private:
 	Eigen::VectorXf difference_;

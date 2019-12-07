@@ -15,10 +15,13 @@ typedef std::shared_ptr<CSimpleNN> CSimpleNN_sptr;
 
 class CSimpleNN {
 public:
+	CSimpleNN() = default;
 	CSimpleNN( std::vector<Layer> layers );
 
 	Eigen::VectorXf getOutput( const Eigen::VectorXf& input ) const;
+
 	CSimpleNN_ptr copyAndMutate(float chance, float range) const;
+	CSimpleNN_ptr copy() const;
 
 	uint32_t getOutputSize() const;
 	uint32_t getInputSize() const;

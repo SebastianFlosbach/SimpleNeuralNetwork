@@ -33,6 +33,9 @@ Eigen::VectorXf numberToVector( uint32_t num ) {
 int main() {
 	srand( static_cast<unsigned int>(clock()) );
 
+	uint32_t generationSize = 10;
+	uint32_t maxGenerations = 100000;
+
 	IdxReader* pImageReader = CreateIdxReader( "data\\train-images.idx" );
 	IdxReader* pLabelReader = CreateIdxReader( "data\\train-labels.idx" );
 
@@ -40,7 +43,7 @@ int main() {
 	IdxObject<Uint8> labels = pLabelReader->getIdxObject<Uint8>();
 
 	SimpleNNFactory* pFactory = CreateSimpleNNFactory();
-	ISimpleNNTrainer* pTrainer = CreateSimpleNNTrainer( 10, 0.2, 0.5 );
+	CSimpleNNTrainer* pTrainer = CreateSimpleNNTrainer( 1000, 0.1, 0.1 );
 
 	IdxObject<Uint8> image = images.getIdxObject( 0 );
 
@@ -52,21 +55,29 @@ int main() {
 	auto nn = pFactory->createSimpleNN( data );
 	pTrainer->generateNextGeneration( *nn.get() );
 
-	for( uint32_t g = 0; g < 10; g++ ) {
-		for( uint32_t i = 0; i < images.size(); i++ ) {
+	for( uint32_t g = 0; g < maxGenerations; g++ ) {
+		for( uint32_t i = 0; i < 1/*images.size()*/; i++ ) {
 			image = images.getIdxObject( i );
 
 			Eigen::VectorXf pixelData = Eigen::VectorXf( image.size() * image.size() );
 
 			for( uint32_t j = 0; j < pixelData.size(); j++ ) {
-				pixelData( j ) = (float)image.getData( j );
+				pixelData( j ) = (float)image.getData( j ) / 255.f;
 			}
 
 			pTrainer->test( pixelData, numberToVector( labels.getData( i ) ) );
-
-
 		}
-		std::cin.get();
+
+		auto hitPercentage = pTrainer->getHitPercentage();
+
+		std::cout << "Generation " << g << std::endl;
+		std::cout << pTrainer->getGenerationFitness()[0].totalDifference() << std::endl;
+		//for( size_t i = 0; i < pTrainer->getGenerationFitness().size(); i++ ) {
+		//	std::cout << pTrainer->getGenerationFitness()[i].totalDifference() << std::endl;
+		//}
+		//std::cout << *std::max_element(hitPercentage.begin(), hitPercentage.end()) * 100.f << "%" << std::endl;
+
+		//std::cin.get();
 		pTrainer->generateNextGeneration();
 	}
 
