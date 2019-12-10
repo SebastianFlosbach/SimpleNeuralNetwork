@@ -42,7 +42,6 @@ int main() {
 	IdxObject<Uint8> images = pImageReader->getIdxObject<Uint8>();
 	IdxObject<Uint8> labels = pLabelReader->getIdxObject<Uint8>();
 
-	SimpleNNFactory* pFactory = CreateSimpleNNFactory();
 	CSimpleNNTrainer* pTrainer = CreateSimpleNNTrainer( 1000, 0.1, 0.1 );
 
 	IdxObject<Uint8> image = images.getIdxObject( 0 );
@@ -52,7 +51,7 @@ int main() {
 	data.addLayer( 4 );
 	data.addLayer( 10 );
 
-	auto nn = pFactory->createSimpleNN( data );
+	auto nn = SimpleNN::CreateSimpleNN( data );
 	pTrainer->generateNextGeneration( *nn.get() );
 
 	for( uint32_t g = 0; g < maxGenerations; g++ ) {

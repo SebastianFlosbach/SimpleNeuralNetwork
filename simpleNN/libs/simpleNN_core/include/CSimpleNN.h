@@ -4,7 +4,7 @@
 #include <vector>
 
 #include "Layer.h"
-#include "CSimpleNN.h"
+#include <SimpleNNData.h>
 
 
 class CSimpleNN;
@@ -16,7 +16,9 @@ typedef std::shared_ptr<CSimpleNN> CSimpleNN_sptr;
 class CSimpleNN {
 public:
 	CSimpleNN() = default;
-	CSimpleNN( std::vector<Layer> layers );
+	CSimpleNN( const std::vector<Layer>& layers );
+	CSimpleNN( const std::vector<uint32_t>& layerNeuronCounts );
+	CSimpleNN( const SimpleNNData& data );
 
 	Eigen::VectorXf getOutput( const Eigen::VectorXf& input ) const;
 

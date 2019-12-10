@@ -1,14 +1,7 @@
 #include "simpleNN.h"
 
 
-SimpleNNFactory* CreateSimpleNNFactory() {
-	return new SimpleNNFactory();
+CSimpleNN_ptr CreateSimpleNN( const SimpleNNData& data ) {
+	return std::make_unique<CSimpleNN>(data);
 }
 
-void DestroySimpleNNFactory(SimpleNNFactory* factory) {
-	if (factory == nullptr) {
-		return;
-	}
-
-	delete factory;
-}

@@ -6,14 +6,6 @@
 #include <SimpleNNData.h>
 
 
-TEST(simpleNN_test, Init) {
-	SimpleNNFactory* pFactory = CreateSimpleNNFactory();
-
-	ASSERT_NE(pFactory, nullptr);
-
-	DestroySimpleNNFactory(pFactory);
-}
-
 TEST(simpleNN_test, CreateSimpleNNData) {
 	SimpleNNData layerData = SimpleNNData();
 	layerData.addLayer(2);
@@ -37,48 +29,36 @@ TEST(simpleNN_test, Negative_CreateSimpleNNData) {
 }
 
 TEST(simpleNN_test, CreateSimpleNN) {
-	SimpleNNFactory* pFactory = CreateSimpleNNFactory();
-
 	SimpleNNData layerData = SimpleNNData();
 	layerData.addLayer(2);
 	layerData.addLayer(1);
 	layerData.addLayer(4);
 	layerData.addLayer(3);
 
-	CSimpleNN_ptr nn = pFactory->createSimpleNN(layerData);
-
-	DestroySimpleNNFactory(pFactory);
+	CSimpleNN_ptr nn = SimpleNN::CreateSimpleNN(layerData);
 }
 
 TEST(simpleNN_test, GetOutput) {
-	SimpleNNFactory* pFactory = CreateSimpleNNFactory();
-
 	SimpleNNData layerData = SimpleNNData();
 	layerData.addLayer(2);
 	layerData.addLayer(1);
 	layerData.addLayer(4);
 	layerData.addLayer(3);
 
-	CSimpleNN_ptr nn = pFactory->createSimpleNN(layerData);
+	CSimpleNN_ptr nn = SimpleNN::CreateSimpleNN(layerData);
 
 	Eigen::VectorXf input = Eigen::VectorXf::Random(2);
 
 	auto output = nn->getOutput(input);
-
-	DestroySimpleNNFactory(pFactory);
 }
 
 TEST(simpleNN_test, Mutate) {
-	SimpleNNFactory* pFactory = CreateSimpleNNFactory();
-
 	SimpleNNData layerData = SimpleNNData();
 	layerData.addLayer(2);
 	layerData.addLayer(1);
 	layerData.addLayer(4);
 	layerData.addLayer(3);
 
-	CSimpleNN_ptr nn = pFactory->createSimpleNN(layerData);
+	CSimpleNN_ptr nn = SimpleNN::CreateSimpleNN(layerData);
 	CSimpleNN_ptr mutatedNN = nn->copyAndMutate(0.5f, 1.f);
-
-	DestroySimpleNNFactory(pFactory);
 }

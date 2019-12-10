@@ -12,8 +12,7 @@ Layer::Layer(Eigen::MatrixXf connections, Eigen::VectorXf bias) : connections_(c
 
 Layer::Layer(const Eigen::VectorXf bias) {
 	bias_ = bias;
-	connections_ = Eigen::MatrixXf(bias.size(), bias.size());
-	connections_.setIdentity();
+	connections_ = Eigen::MatrixXf( bias.size(), bias.size() ).setIdentity();
 }
 
 Eigen::VectorXf Layer::getOutput(const Eigen::VectorXf& input) const

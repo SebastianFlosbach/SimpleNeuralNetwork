@@ -2,8 +2,13 @@
 
 #include "simpleNN_export.h"
 
-#include "SimpleNNFactory.h"
+#include "CSimpleNN.h"
 
 
-SIMPLE_NN_EXPORTS SimpleNNFactory* CreateSimpleNNFactory();
-SIMPLE_NN_EXPORTS void DestroySimpleNNFactory(SimpleNNFactory* factory);
+namespace SimpleNN {
+
+
+	SIMPLE_NN_EXPORTS CSimpleNN_ptr CreateSimpleNN( const SimpleNNData& data );
+
+
+}
