@@ -7,20 +7,20 @@
 
 
 TEST(simpleNN_test, CreateSimpleNNData) {
-	SimpleNNData layerData = SimpleNNData();
-	layerData.addLayer(2);
-	layerData.addLayer(1);
-	layerData.addLayer(4);
-	layerData.addLayer(3);
+	SimpleNNData nnData = SimpleNNData();
+	nnData.addLayer(2);
+	nnData.addLayer(1);
+	nnData.addLayer(4);
+	nnData.addLayer(3);
 
-	ASSERT_EQ(layerData.size(), 4);
+	ASSERT_EQ( nnData.size(), 4);
 
-	auto* pLayerData = layerData.getLayerNeuronCounts();
+	const std::vector<uint32_t>& layerData = nnData.getLayerNeuronCounts();
 
-	ASSERT_EQ(pLayerData[0], 2);
-	ASSERT_EQ(pLayerData[1], 1);
-	ASSERT_EQ(pLayerData[2], 4);
-	ASSERT_EQ(pLayerData[3], 3);
+	ASSERT_EQ( layerData[0], 2);
+	ASSERT_EQ( layerData[1], 1);
+	ASSERT_EQ( layerData[2], 4);
+	ASSERT_EQ( layerData[3], 3);
 }
 
 TEST(simpleNN_test, Negative_CreateSimpleNNData) {

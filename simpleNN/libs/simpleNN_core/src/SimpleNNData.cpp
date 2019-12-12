@@ -11,8 +11,8 @@ void SimpleNNData::addLayer( uint32_t neuronCount ) {
 	neuronLayerCount.push_back(neuronCount);
 }
 
-const uint32_t* SimpleNNData::getLayerNeuronCounts() const {
-	return neuronLayerCount.data();
+const std::vector<uint32_t>& SimpleNNData::getLayerNeuronCounts() const {
+	return neuronLayerCount;
 }
 
 size_t SimpleNNData::size() const {

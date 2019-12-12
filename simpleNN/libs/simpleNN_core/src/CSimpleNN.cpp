@@ -8,29 +8,17 @@ CSimpleNN::CSimpleNN( const std::vector<uint32_t>& layerNeuronCounts ) {
 	layers_ = std::vector<Layer>( layerNeuronCounts.size() );
 
 	for( size_t i = 0; i < layerNeuronCounts.size() - 1; i++ ) {
-		Eigen::MatrixXf connectionMatrix = Eigen::MatrixXf::Random( layerNeuronCounts[i + 1], layerNeuronCounts[i] );
+		Eigen::MatrixXf connectionMatrix = Eigen::MatrixXf::Random( layerNeuronCounts[i + 1], layerNeuronCounts[i] ) / layerNeuronCounts[i];
 		Eigen::VectorXf biasVector = Eigen::VectorXf::Random( layerNeuronCounts[i] );
 		layers_[i] = Layer( connectionMatrix, biasVector );
 	}
 
-	Eigen::MatrixXf connectionMatrix = Eigen::MatrixXf::Identity( layerNeuronCounts[layerNeuronCounts.size() - 1], layerNeuronCounts[layerNeuronCounts.size() - 1] );
+	Eigen::MatrixXf connectionMatrix = Eigen::MatrixXf::Identity( layerNeuronCounts[layerNeuronCounts.size() - 1], layerNeuronCounts[layerNeuronCounts.size() - 1] ) / layerNeuronCounts[layerNeuronCounts.size() - 1];
 	Eigen::VectorXf biasVector = Eigen::VectorXf::Random( layerNeuronCounts[layerNeuronCounts.size() - 1] );
 	layers_[layerNeuronCounts.size() - 1] = Layer( connectionMatrix, biasVector );
 }
 
-CSimpleNN::CSimpleNN( const SimpleNNData& data ) {
-	auto* layerData = data.getLayerNeuronCounts();
-	layers_ = std::vector<Layer>( data.size() );
-
-	for( size_t i = 0; i < data.size() - 1; i++ ) {
-		Eigen::MatrixXf connectionMatrix = Eigen::MatrixXf::Random( layerData[i + 1], layerData[i] );
-		Eigen::VectorXf biasVector = Eigen::VectorXf::Random( layerData[i] );
-		layers_[i] = Layer( connectionMatrix, biasVector );
-	}
-
-	Eigen::MatrixXf connectionMatrix = Eigen::MatrixXf::Identity( layerData[data.size() - 1], layerData[data.size() - 1] );
-	Eigen::VectorXf biasVector = Eigen::VectorXf::Random( layerData[data.size() - 1] );
-	layers_[data.size() - 1] = Layer( connectionMatrix, biasVector );
+CSimpleNN::CSimpleNN( const SimpleNNData& data ) : CSimpleNN(data.getLayerNeuronCounts()) {
 }
 
 Eigen::VectorXf CSimpleNN::getOutput( const Eigen::VectorXf& input ) const {
