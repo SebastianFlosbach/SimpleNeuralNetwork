@@ -35,7 +35,7 @@ TEST(simpleNN_test, CreateSimpleNN) {
 	layerData.addLayer(4);
 	layerData.addLayer(3);
 
-	CSimpleNN_ptr nn = SimpleNN::CreateSimpleNN(layerData);
+	CSimpleNN_ptr nn = SimpleNN::Create(layerData);
 }
 
 TEST(simpleNN_test, GetOutput) {
@@ -45,7 +45,7 @@ TEST(simpleNN_test, GetOutput) {
 	layerData.addLayer(4);
 	layerData.addLayer(3);
 
-	CSimpleNN_ptr nn = SimpleNN::CreateSimpleNN(layerData);
+	CSimpleNN_ptr nn = SimpleNN::Create(layerData);
 
 	Eigen::VectorXf input = Eigen::VectorXf::Random(2);
 
@@ -59,6 +59,19 @@ TEST(simpleNN_test, Mutate) {
 	layerData.addLayer(4);
 	layerData.addLayer(3);
 
-	CSimpleNN_ptr nn = SimpleNN::CreateSimpleNN(layerData);
+	CSimpleNN_ptr nn = SimpleNN::Create(layerData);
 	CSimpleNN_ptr mutatedNN = nn->copyAndMutate(0.5f, 1.f);
+}
+
+TEST( simpleNN_test, Writer ) {
+	SimpleNNWriter writer = SimpleNNWriter("");
+	SimpleNNData layerData = SimpleNNData();
+	layerData.addLayer( 2 );
+	layerData.addLayer( 1 );
+	layerData.addLayer( 4 );
+	layerData.addLayer( 3 );
+
+	auto nn = SimpleNN::Create( layerData );
+
+	writer.write( *nn.get() );
 }

@@ -4,6 +4,7 @@
 
 
 class Layer {
+	friend class SimpleNNWriter;
 public:
 	Layer() = default;
 	Layer( const Eigen::MatrixXf connections, const Eigen::VectorXf bias );

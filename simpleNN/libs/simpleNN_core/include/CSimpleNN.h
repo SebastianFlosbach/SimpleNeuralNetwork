@@ -14,6 +14,7 @@ typedef std::shared_ptr<CSimpleNN> CSimpleNN_sptr;
 
 
 class CSimpleNN {
+	friend class SimpleNNWriter;
 public:
 	CSimpleNN() = default;
 	CSimpleNN( const std::vector<Layer>& layers );

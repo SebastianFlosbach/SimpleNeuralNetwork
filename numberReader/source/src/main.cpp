@@ -51,7 +51,7 @@ int main() {
 	data.addLayer( 4 );
 	data.addLayer( 10 );
 
-	auto nn = SimpleNN::CreateSimpleNN( data );
+	auto nn = SimpleNN::Create( data );
 	pTrainer->generateNextGeneration( *nn.get() );
 
 	for( uint32_t g = 0; g < maxGenerations; g++ ) {
