@@ -64,7 +64,7 @@ TEST(simpleNN_test, Mutate) {
 }
 
 TEST( simpleNN_test, Writer ) {
-	SimpleNNWriter writer = SimpleNNWriter("");
+	SimpleNNWriter writer = SimpleNNWriter("simpleNNWriterTest.nn");
 	SimpleNNData layerData = SimpleNNData();
 	layerData.addLayer( 2 );
 	layerData.addLayer( 1 );
@@ -73,5 +73,5 @@ TEST( simpleNN_test, Writer ) {
 
 	auto nn = SimpleNN::Create( layerData );
 
-	writer.write( *nn.get() );
+	ASSERT_TRUE( writer.write( *nn.get() ) );
 }

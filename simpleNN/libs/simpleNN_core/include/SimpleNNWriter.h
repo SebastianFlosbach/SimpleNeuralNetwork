@@ -13,7 +13,7 @@ class SimpleNNWriter {
 public:
 	SimpleNNWriter( const std::string& path );
 
-	void write( const CSimpleNN& simpleNN ) const;
+	bool write( const CSimpleNN& simpleNN ) const;
 
 private:
 	std::string path_;

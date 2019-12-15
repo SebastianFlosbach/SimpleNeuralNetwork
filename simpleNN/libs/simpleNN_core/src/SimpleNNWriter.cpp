@@ -2,12 +2,13 @@
 
 #include <rapidjson/stringbuffer.h>
 #include <rapidjson/prettywriter.h>
+#include <fstream>
 
 
 SimpleNNWriter::SimpleNNWriter( const std::string& path ) : path_( path ) {
 }
 
-void SimpleNNWriter::write( const CSimpleNN& simpleNN ) const {
+bool SimpleNNWriter::write( const CSimpleNN& simpleNN ) const {
 	rapidjson::Document doc = rapidjson::Document();
 
 	doc.SetObject();
@@ -49,5 +50,12 @@ void SimpleNNWriter::write( const CSimpleNN& simpleNN ) const {
 	rapidjson::PrettyWriter<rapidjson::StringBuffer> writer( buffer );
 	doc.Accept( writer );
 
-	std::cout << buffer.GetString() << std::endl;
+	try {
+		std::ofstream outFileStream( path_ );
+		outFileStream << buffer.GetString();
+	} catch( const std::exception& ) {
+		return false;
+	}
+
+	return true;
 }
