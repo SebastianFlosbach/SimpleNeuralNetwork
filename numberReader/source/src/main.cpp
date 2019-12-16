@@ -42,19 +42,24 @@ int main() {
 	IdxObject<Uint8> images = pImageReader->getIdxObject<Uint8>();
 	IdxObject<Uint8> labels = pLabelReader->getIdxObject<Uint8>();
 
-	CSimpleNNTrainer* pTrainer = CreateSimpleNNTrainer( 1000, 0.2, 0.5 );
+	CSimpleNNTrainer* pTrainer = CreateSimpleNNTrainer( 1000, 0.1, 0.25 );
 
 	IdxObject<Uint8> image = images.getIdxObject( 0 );
 
 	SimpleNNData data = SimpleNNData();
 	data.addLayer( image.size() * image.size() );
-	data.addLayer( 4 );
+	data.addLayer( 16 );
+	data.addLayer( 16 );
 	data.addLayer( 10 );
 
 	auto nn = SimpleNN::Create( data );
 	pTrainer->generateNextGeneration( *nn.get() );
 
-	for( uint32_t g = 0; g < maxGenerations; g++ ) {
+	Fitness bestFitness = Fitness( 10, std::numeric_limits<float>::infinity() );
+
+	SimpleNNWriter writer("bestNN.json");
+
+	for( uint32_t g = 0;; g++ ) {
 		for( uint32_t i = 0; i < 10/*images.size()*/; i++ ) {
 			image = images.getIdxObject( i );
 
@@ -70,11 +75,16 @@ int main() {
 		auto hitPercentage = pTrainer->getHitPercentage();
 
 		std::cout << "Generation " << g << std::endl;
-		std::cout << pTrainer->getGenerationFitness()[0].totalDifference() << std::endl;
+		std::cout << pTrainer->getCurrentBestFitness().totalDifference() << std::endl;
 		//for( size_t i = 0; i < pTrainer->getGenerationFitness().size(); i++ ) {
 		//	std::cout << pTrainer->getGenerationFitness()[i].totalDifference() << std::endl;
 		//}
 		std::cout << *std::max_element(hitPercentage.begin(), hitPercentage.end()) * 100.f << "%" << std::endl;
+
+		if( pTrainer->getCurrentBestFitness() < bestFitness ) {
+			bestFitness = pTrainer->getCurrentBestFitness();
+			writer.write( *pTrainer->getCurrentBest() );
+		}
 
 		//std::cin.get();
 		pTrainer->generateNextGeneration();

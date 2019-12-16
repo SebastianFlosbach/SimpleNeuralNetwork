@@ -23,6 +23,7 @@ public:
 	void test( const Eigen::VectorXf& input, const Eigen::VectorXf& expectedOutput );
 
 	const CSimpleNN* getCurrentBest() const;
+	const Fitness& getCurrentBestFitness() const;
 
 	std::vector<float> getHitPercentage() const;
 	std::vector<Fitness> getGenerationFitness() const;

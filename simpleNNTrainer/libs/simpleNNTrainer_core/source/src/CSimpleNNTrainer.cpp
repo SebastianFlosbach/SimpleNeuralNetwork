@@ -79,12 +79,24 @@ const CSimpleNN* CSimpleNNTrainer::getCurrentBest() const {
 	size_t bestIndex = 0;
 
 	for( size_t i = 1; i < generation_.size(); i++ ) {
-		if( generation_[i].second < generation_[bestIndex].second ) {
+		if( generation_[i].second <= generation_[bestIndex].second ) {
 			bestIndex = i;
 		}
 	}
 
 	return generation_[bestIndex].first.get();
+}
+
+const Fitness& CSimpleNNTrainer::getCurrentBestFitness() const {
+	size_t bestIndex = 0;
+
+	for( size_t i = 1; i < generation_.size(); i++ ) {
+		if( generation_[i].second <= generation_[bestIndex].second ) {
+			bestIndex = i;
+		}
+	}
+
+	return generation_[bestIndex].second;
 }
 
 std::vector<float> CSimpleNNTrainer::getHitPercentage() const {

@@ -11,6 +11,12 @@ public:
 	Fitness(uint32_t size) noexcept : difference_(Eigen::VectorXf::Zero(size)) {
 	}
 
+	Fitness( uint32_t size, float initializer ) noexcept : difference_( Eigen::VectorXf::Zero( size ) ) {
+		for( Eigen::Index i = 0; i < size; i++ ) {
+			difference_( i ) = initializer;
+		}
+	}
+
 	Fitness( const Eigen::VectorXf& difference ) noexcept : difference_( difference ) {
 	}
 
@@ -22,7 +28,7 @@ public:
 		difference_ = Eigen::VectorXf( value.size() );
 
 		for( Eigen::Index i = 0; i < value.size(); i++ ) {
-			difference_[i] = abs(expected[i] - value[i]);
+				difference_[i] = (value[i] - expected[i]) * (value[i] - expected[i]);
 		}
 	}
 
